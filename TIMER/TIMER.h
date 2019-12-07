@@ -26,7 +26,7 @@ typedef struct
     
 }TIMER_Type;
 
-#define TIMER_Base_Address 0x0x40004000
+#define TIMER_Base_Address 0x40004000
 #define TIMER_0 ((TIMER_Type *) TIMER_Base_Address)
 #define TIMER_1 ((TIMER_Type *) (TIMER_Base_Address + 0x4000))
 #define TIMER_2 ((TIMER_Type *) (TIMER_Base_Address + 0x90000))
