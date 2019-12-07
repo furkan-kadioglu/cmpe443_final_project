@@ -30,8 +30,8 @@ typedef struct PWM_Type
     
 };
 
-#define PWM_Base_Adress 0x40014000
-#define PWM_0 ((PWM_Type *) PWM_Base_Adress)
-#define PWM_1 ((PWM_Type *) (PWM_Base_Adress + 0x4000))
+#define PWM_Base_Address 0x40014000
+#define PWM_0 ((PWM_Type *) PWM_Base_Address)
+#define PWM_1 ((PWM_Type *) (PWM_Base_Address + 0x4000))
 
 void PWM_Init();

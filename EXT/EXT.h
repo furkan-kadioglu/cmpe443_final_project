@@ -8,7 +8,7 @@ typedef struct EXT_Type
     volatile uint32_t EXTPOLAR;           
 };
 
-#define EXT_Base_Adress 0x0x400FC140
-#define EXT ((EXT_Type *) EXT_Base_Adress)
+#define EXT_Base_Address 0x0x400FC140
+#define EXT ((EXT_Type *) EXT_Base_Address)
 
 void EXT_Init();

@@ -19,7 +19,7 @@ typedef struct ADC_Type
 
 };
 
-#define ADC_Base_Adress 0x40034000
-#define ADC ((ADC_Type *) ADC_Base_Adress)
+#define ADC_Base_Address 0x40034000
+#define ADC ((ADC_Type *) ADC_Base_Address)
 
 void ADC_Init();
