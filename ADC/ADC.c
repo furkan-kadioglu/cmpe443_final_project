@@ -2,5 +2,7 @@
 
 void ADC_Init()
 {
+    // PCONP
 
+    // IOCON
 }

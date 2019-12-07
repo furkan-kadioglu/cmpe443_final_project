@@ -22,3 +22,4 @@ typedef struct
 #define SPIFICLKSEL ((uint32_t *) 0x400FC1B4)
 
 void PLL_Init();
+void PLL_Feed();
