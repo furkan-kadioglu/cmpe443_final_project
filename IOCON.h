@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-typedef struct IOCON_Type
+typedef struct 
 {
     volatile uint32_t P0;
     volatile uint32_t P1;
@@ -34,7 +34,8 @@ typedef struct IOCON_Type
     volatile uint32_t P29;
     volatile uint32_t P30;
     volatile uint32_t P31;
-};
+
+}IOCON_Type;
 
 #define IOCON_Base_Address 0x4002C000
 #define IOCON_0 ((IOCON_Type *) IOCON_Base_Address)

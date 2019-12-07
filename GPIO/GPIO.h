@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-typedef struct GPIO_Type
+typedef struct
 {
     volatile uint32_t DIR;      
              uint32_t reserved[3];
@@ -8,7 +8,8 @@ typedef struct GPIO_Type
     volatile uint32_t PIN;
     volatile uint32_t SET;
     volatile uint32_t CLR;
-};
+    
+}GPIO_Type;
 
 #define GPIO_Base_Address 0x20098000
 #define GPIO_0 ((GPIO_Type *) GPIO_Base_Address)

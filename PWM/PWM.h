@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-typedef struct PWM_Type
+typedef struct 
 {
     volatile uint32_t IR;       // Interrupt Register  
     volatile uint32_t TCR;      // Timer Control Register
@@ -28,7 +28,7 @@ typedef struct PWM_Type
              uint32_t reserved[7];
     volatile uint32_t CTCR;     // Count Control Register
     
-};
+}PWM_Type;
 
 #define PWM_Base_Address 0x40014000
 #define PWM_0 ((PWM_Type *) PWM_Base_Address)

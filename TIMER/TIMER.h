@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-typedef struct TIMER_Type
+typedef struct 
 {
     volatile uint32_t IR;       // Interrupt Register  
     volatile uint32_t TCR;      // Timer Control Register
@@ -23,7 +23,7 @@ typedef struct TIMER_Type
              uint32_t reserved[12];
     volatile uint32_t CTCR;     // Count Control Register
     
-};
+}TIMER_Type;
 
 #define TIMER_Base_Address 0x0x40004000
 #define TIMER_0 ((TIMER_Type *) TIMER_Base_Address)

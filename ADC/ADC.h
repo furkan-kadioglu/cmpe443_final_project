@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-typedef struct ADC_Type
+typedef struct 
 {
     volatile uint32_t CR;           // Control Register
     volatile uint32_t GDR;          // Global Data Register
@@ -17,7 +17,7 @@ typedef struct ADC_Type
     volatile uint32_t STAT;         // Status Register
     volatile uint32_t TRM;          // Trim Register
 
-};
+}ADC_Type;
 
 #define ADC_Base_Address 0x40034000
 #define ADC ((ADC_Type *) ADC_Base_Address)
