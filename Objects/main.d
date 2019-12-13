@@ -14,3 +14,5 @@
 .\objects\main.o: Joystick.h
 .\objects\main.o: Ultrasonic.h
 .\objects\main.o: Timer.h
+.\objects\main.o: Led.h
+.\objects\main.o: Signal.h
