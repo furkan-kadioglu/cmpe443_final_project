@@ -1,11 +1,10 @@
 #include "LPC407x_8x_177x_8x.h"
 #include "GPIO.h"
-#include "MOTOR.h"
 #include "Joystick.h"
 #include "Ultrasonic.h"
 #include "Led.h"
 #include "Signal.h"
-
+#include "Command.h"
 
 
 void init() {
@@ -19,8 +18,22 @@ void init() {
 }
 
 void update() {
-
 	
+	if(Joystick_Center_Pressed()){
+		STOP();
+	}
+	if(Joystick_Up_Pressed()){
+		FORWARD();
+	}
+	if(Joystick_Down_Pressed()){
+		BACK();
+	}
+	if(Joystick_Right_Pressed()){
+		RIGHT();
+	}
+	if(Joystick_Left_Pressed()){
+		LEFT();
+	}
 }
  
 int main() {

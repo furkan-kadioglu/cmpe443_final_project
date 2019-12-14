@@ -8,11 +8,14 @@
 .\objects\main.o: C:\Users\furkan\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include\mpu_armv7.h
 .\objects\main.o: C:\Users\furkan\AppData\Local\Arm\Packs\Keil\LPC4000_DFP\2.1.0\Device\Include\system_LPC407x_8x_177x_8x.h
 .\objects\main.o: GPIO.h
-.\objects\main.o: MOTOR.h
-.\objects\main.o: SystemStructures.h
-.\objects\main.o: PWM.h
 .\objects\main.o: Joystick.h
 .\objects\main.o: Ultrasonic.h
 .\objects\main.o: Timer.h
+.\objects\main.o: SystemStructures.h
 .\objects\main.o: Led.h
+.\objects\main.o: Signal.h
+.\objects\main.o: Command.h
+.\objects\main.o: MOTOR.h
+.\objects\main.o: PWM.h
+.\objects\main.o: Signal.h
 .\objects\main.o: Signal.h

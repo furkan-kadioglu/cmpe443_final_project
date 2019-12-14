@@ -10,3 +10,5 @@
 .\objects\motor.o: C:\Users\furkan\AppData\Local\Arm\Packs\Keil\LPC4000_DFP\2.1.0\Device\Include\system_LPC407x_8x_177x_8x.h
 .\objects\motor.o: SystemStructures.h
 .\objects\motor.o: PWM.h
+.\objects\motor.o: GPIO.h
+.\objects\motor.o: Signal.h

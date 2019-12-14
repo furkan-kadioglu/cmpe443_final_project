@@ -13,4 +13,5 @@
 #define BACK_SIGNAL_MASK		(1 << 19)
 
 void Signal_Init(void);
-void SET_Signal(GPIO_TypeDef* PORT,uint32_t MASK, uint8_t on);
+void Start_Signal(GPIO_TypeDef* PORT, uint32_t MASK);
+void Finish_Signal(void);

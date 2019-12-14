@@ -1,4 +1,5 @@
 #include "MOTOR.h"
+#include "GPIO.h"
 
 void MOTOR_Init() {
 	//Change the function of the pin in here:
@@ -20,14 +21,20 @@ void MOTOR_Init() {
 	//Configure MR0 register for a period of 20 ms
 	PWM_MOTOR->MR0 = 120000;
 	
-	PWM_MOTOR->MCR = 1 << 1;;
+	PWM_MOTOR->MCR |= 3;
 	
 	PWM_MOTOR->LER |= 1 << 0;
 	
 	PWM_MOTOR->TCR = (1 << 0 | 1 << 3);
 	
 	SET_MOTOR_POWER(0, 0);
+	
+	MOTOR_DRIVER_IN1_PORT->DIR |= MOTOR_DRIVER_IN1_MASK;
+	MOTOR_DRIVER_IN2_PORT->DIR |= MOTOR_DRIVER_IN2_MASK;
+	MOTOR_DRIVER_IN3_PORT->DIR |= MOTOR_DRIVER_IN3_MASK;
+	MOTOR_DRIVER_IN4_PORT->DIR |= MOTOR_DRIVER_IN4_MASK;
 }
+
 
 void SET_MOTOR_POWER(uint32_t left, uint32_t right){
 	if(left > 100) {
@@ -43,4 +50,16 @@ void SET_MOTOR_POWER(uint32_t left, uint32_t right){
 	
 	//Enable PWM Match Register Latch.
 	PWM_MOTOR->LER |= (3 << 5);
+}
+
+void PWM0_IRQHandler(){
+	
+	PWM_MOTOR->IR |= 1;
+	NUMBER_OF_TURN += 1;
+	
+	if(NUMBER_OF_TURN >= 40){
+		NVIC_DisableIRQ(PWM0_IRQn);
+		Finish_Signal();
+		NUMBER_OF_TURN = 0;
+	}
 }
