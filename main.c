@@ -4,31 +4,24 @@
 #include "Ultrasonic.h"
 #include "Led.h"
 #include "Signal.h"
-
-uint32_t i;
+#include "ADC.h"
 
 void init() {
 	Joystick_Init();
 	MOTOR_Init();
-	
-	// They should be called at AUTO MODE and START
-	//Ultrasonic_Init();
-	//Ultrasonic_Start_Trigger_Timer();
-	
+	TIMER_Init();
 	LED_Init();
 	Signal_Init();
 
 }
 
 void update() {
-	
+	/* AUTO MODE TEST CASE
 	if(Joystick_Center_Pressed()){
 		
 		FINISH();
 		PCONP &= ~(1 << 22);
-		
-		
-	
+			
 
 	}
 	if(Joystick_Up_Pressed()){
@@ -42,8 +35,45 @@ void update() {
 		Ultrasonic_Start_Trigger_Timer();
 		
 	}
+	*/
 	
+	/* ADC TEST CASE
+	__WFI();
+	LED1_On();
+	LED2_On();
+	LED3_Off();
+	LED4_Off();
+	if(LDR1_Last > 0xC00){
+		LED2_Off();
+	}
+	if(LDR1_Last > 0xD00){
+		LED1_Off();
+	}
+	if(LDR1_Last < 0xA00){
+		LED3_On();
+	}
+	if(LDR1_Last < 0x800){
+		LED4_On();
+	}
+	*/
 	
+	/* COMMANDS & SIGNAL TEST
+	if(Joystick_Center_Pressed()){
+		STOP();
+	}
+	if(Joystick_Down_Pressed()){
+		BACK();
+	}
+	if(Joystick_Up_Pressed()){
+		FORWARD();
+	}
+	if(Joystick_Right_Pressed()){
+		RIGHT(90);
+	}
+	if(Joystick_Left_Pressed()){
+		LEFT(90);
+	}
+	*/
 	
 	
 }

@@ -34,4 +34,6 @@ typedef struct
 #define TIMER2	((TIMER_TypeDef*) TIMER2_BASE)
 #define TIMER3	((TIMER_TypeDef*) TIMER3_BASE)
 
+void TIMER_Init(void);
+
 #endif

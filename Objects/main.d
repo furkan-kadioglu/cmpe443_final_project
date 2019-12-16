@@ -19,3 +19,4 @@
 .\objects\main.o: Signal.h
 .\objects\main.o: Led.h
 .\objects\main.o: Signal.h
+.\objects\main.o: ADC.h
