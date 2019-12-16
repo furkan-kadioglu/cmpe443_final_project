@@ -4,14 +4,17 @@
 #include "Ultrasonic.h"
 #include "Led.h"
 #include "Signal.h"
-#include "Command.h"
 
+uint32_t i;
 
 void init() {
 	Joystick_Init();
 	MOTOR_Init();
-	Ultrasonic_Init();
-	Ultrasonic_Start_Trigger_Timer();
+	
+	// They should be called at AUTO MODE and START
+	//Ultrasonic_Init();
+	//Ultrasonic_Start_Trigger_Timer();
+	
 	LED_Init();
 	Signal_Init();
 
@@ -20,20 +23,29 @@ void init() {
 void update() {
 	
 	if(Joystick_Center_Pressed()){
-		STOP();
+		
+		FINISH();
+		PCONP &= ~(1 << 22);
+		
+		
+	
+
 	}
 	if(Joystick_Up_Pressed()){
+		
+			// "AUTO" 
+		AUTONOMOUS();
+		Ultrasonic_Init();
+		
+		// "START"
 		FORWARD();
+		Ultrasonic_Start_Trigger_Timer();
+		
 	}
-	if(Joystick_Down_Pressed()){
-		BACK();
-	}
-	if(Joystick_Right_Pressed()){
-		RIGHT();
-	}
-	if(Joystick_Left_Pressed()){
-		LEFT();
-	}
+	
+	
+	
+	
 }
  
 int main() {

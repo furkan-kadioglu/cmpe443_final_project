@@ -21,7 +21,7 @@ void MOTOR_Init() {
 	//Configure MR0 register for a period of 20 ms
 	PWM_MOTOR->MR0 = 120000;
 	
-	PWM_MOTOR->MCR |= 3;
+	PWM_MOTOR->MCR |= 2;
 	
 	PWM_MOTOR->LER |= 1 << 0;
 	
@@ -33,6 +33,7 @@ void MOTOR_Init() {
 	MOTOR_DRIVER_IN2_PORT->DIR |= MOTOR_DRIVER_IN2_MASK;
 	MOTOR_DRIVER_IN3_PORT->DIR |= MOTOR_DRIVER_IN3_MASK;
 	MOTOR_DRIVER_IN4_PORT->DIR |= MOTOR_DRIVER_IN4_MASK;
+	
 }
 
 
@@ -57,8 +58,13 @@ void PWM0_IRQHandler(){
 	PWM_MOTOR->IR |= 1;
 	NUMBER_OF_TURN += 1;
 	
-	if(NUMBER_OF_TURN >= 40){
+	if(NUMBER_OF_TURN >= NUMBER_OF_CYCLE_PER_DEGREE * DEGREE_OF_TURN){
+		// Turn off interrupt
+		PWM_MOTOR->MCR &= ~1;
 		NVIC_DisableIRQ(PWM0_IRQn);
+		
+		SET_MOTOR_POWER(0, 0);
+		
 		Finish_Signal();
 		NUMBER_OF_TURN = 0;
 	}

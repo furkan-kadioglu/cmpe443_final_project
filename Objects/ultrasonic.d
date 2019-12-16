@@ -11,3 +11,8 @@
 .\objects\ultrasonic.o: C:\Users\furkan\AppData\Local\Arm\Packs\Keil\LPC4000_DFP\2.1.0\Device\Include\system_LPC407x_8x_177x_8x.h
 .\objects\ultrasonic.o: Timer.h
 .\objects\ultrasonic.o: SystemStructures.h
+.\objects\ultrasonic.o: Command.h
+.\objects\ultrasonic.o: MOTOR.h
+.\objects\ultrasonic.o: PWM.h
+.\objects\ultrasonic.o: Signal.h
+.\objects\ultrasonic.o: Signal.h

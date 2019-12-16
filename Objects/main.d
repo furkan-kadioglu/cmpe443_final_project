@@ -12,10 +12,10 @@
 .\objects\main.o: Ultrasonic.h
 .\objects\main.o: Timer.h
 .\objects\main.o: SystemStructures.h
-.\objects\main.o: Led.h
-.\objects\main.o: Signal.h
 .\objects\main.o: Command.h
 .\objects\main.o: MOTOR.h
 .\objects\main.o: PWM.h
 .\objects\main.o: Signal.h
+.\objects\main.o: Signal.h
+.\objects\main.o: Led.h
 .\objects\main.o: Signal.h

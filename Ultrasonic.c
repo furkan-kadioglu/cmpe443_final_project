@@ -3,9 +3,7 @@
 uint32_t ultrasonicSensorRisingCaptureTime;
 uint32_t ultrasonicSensorFallingCaptureTime;
 
-uint32_t ultrasonicSensorDuration = 0;
 uint32_t ultrasonicSensorDistance = 0;
-uint8_t ultrasonicSensorNewDataAvailable = 0;
 
 uint8_t ultrasonicSensorTriggerStart = 0;
 uint8_t ultrasonicSensorCaptureRisingEdge = 0;
@@ -76,7 +74,7 @@ void Ultrasonic_Start_Trigger_Timer() {
 	TIMER2->MR3 = TIMER2->TC + 10; 
 	
 	//Enable interrupt for MR3 register, if MR3 register matches the TC.
-	TIMER2->MCR |= (1<<9); 
+	TIMER2->MCR |= (1<<9);
 	
 	//Remove the reset on counters of Timer2.
 	TIMER2->TCR &= ~2;
@@ -113,9 +111,16 @@ void TIMER3_IRQHandler() {
 		ultrasonicSensorCaptureRisingEdge = 0;
 	}
 	else {
-		ultrasonicSensorFallingCaptureTime = TIMER3->CR1;
-		ultrasonicSensorNewDataAvailable = 1;
 		
+		ultrasonicSensorDistance = (170 * (TIMER3->CR1 - ultrasonicSensorRisingCaptureTime)) ;
+		if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 15000){
+			LEFT(5); // Mater has already moved forward, maybe this call will be optimized.
+		}
+		if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - 15000){
+			RIGHT(5);
+		}
+		
+					
 		LPC_TIM3->CCR = (1 << 3) | (1 << 5);
 		ultrasonicSensorCaptureRisingEdge = 1;
 	}

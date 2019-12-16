@@ -12,7 +12,7 @@ void Signal_Init(){
 	//Change the mode of Timer1 to Timer Mode.
 	TIMER1->CTCR &= ~3;
 	
-	TIMER1->MCR |= 3;
+	TIMER1->MCR |= 2;
 	
 	TIMER1->TCR &= ~(1 << 0);
 	
@@ -30,6 +30,11 @@ void Signal_Init(){
 	LEFT_SIGNAL_PORT->DIR |= LEFT_SIGNAL_MASK;
 	FORWARD_SIGNAL_PORT->DIR |= FORWARD_SIGNAL_MASK;
 	BACK_SIGNAL_PORT->DIR |= BACK_SIGNAL_MASK;
+	
+	RIGHT_SIGNAL_PORT->CLR |= RIGHT_SIGNAL_MASK;
+	LEFT_SIGNAL_PORT->CLR |= LEFT_SIGNAL_MASK;
+	FORWARD_SIGNAL_PORT->CLR |= FORWARD_SIGNAL_MASK;
+	BACK_SIGNAL_PORT->CLR |= BACK_SIGNAL_MASK;
 }
 
 void Start_Signal(GPIO_TypeDef* PORT, uint32_t MASK){
@@ -43,7 +48,7 @@ void Start_Signal(GPIO_TypeDef* PORT, uint32_t MASK){
 	
 	NVIC_EnableIRQ(TIMER1_IRQn);
 	NVIC_ClearPendingIRQ(TIMER1_IRQn);
-	
+	TIMER1->MCR |= 1;
 	
 	TIMER1->TCR &= ~2;
 	TIMER1->TCR |=  1;
@@ -55,7 +60,9 @@ void Finish_Signal(){
 	LEFT_SIGNAL_PORT->CLR |= TURNING_MASK;
 	
 	NVIC_DisableIRQ(TIMER1_IRQn);
+	TIMER1->MCR &= ~1;
 	TIMER1->TCR &= ~1;
+	TURN_ON = 0;
 }
 
 void TIMER1_IRQHandler() {
@@ -63,6 +70,7 @@ void TIMER1_IRQHandler() {
 	
 	if(TURN_ON){
 		TURNING_PORT->CLR |= TURNING_MASK;
+		TURN_ON = 0;
 	}
 	else {
 		TURNING_PORT->SET |= TURNING_MASK;

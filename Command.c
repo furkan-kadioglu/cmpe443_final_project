@@ -34,11 +34,13 @@ void STOP(){
 	FORWARD_SIGNAL_PORT->CLR |= FORWARD_SIGNAL_MASK;
 }
 
-void RIGHT(){
+void RIGHT(uint32_t DEGREE){
 	
 	// Set Interrupt for 90 degrees
 	NVIC_EnableIRQ(PWM0_IRQn);
 	NVIC_ClearPendingIRQ(PWM0_IRQn);
+	PWM_MOTOR->MCR |= 1;
+	DEGREE_OF_TURN = DEGREE;
 	
 	// Set Motor
 	MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
@@ -54,10 +56,13 @@ void RIGHT(){
 	
 }
 
-void LEFT(){
+void LEFT(uint32_t DEGREE){
+	
 	// Set Interrupt for 90 degrees
 	NVIC_EnableIRQ(PWM0_IRQn);
 	NVIC_ClearPendingIRQ(PWM0_IRQn);
+	PWM_MOTOR->MCR |= 1;
+	DEGREE_OF_TURN = DEGREE;
 	
 	// Set Motor
 	MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
@@ -79,3 +84,4 @@ void AUTONOMOUS (void){
 void TESTING (void){
 	MODE = TEST;
 }
+

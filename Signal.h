@@ -7,7 +7,7 @@
 #define FORWARD_SIGNAL_PORT PORT1
 #define BACK_SIGNAL_PORT 		PORT2
 
-#define RIGHT_SIGNAL_MASK 	(1 << 18)
+#define RIGHT_SIGNAL_MASK 	((uint32_t)1 << 31)
 #define LEFT_SIGNAL_MASK 		(1 << 13)
 #define FORWARD_SIGNAL_MASK (1 << 13)
 #define BACK_SIGNAL_MASK		(1 << 19)

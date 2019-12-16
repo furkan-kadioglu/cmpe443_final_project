@@ -21,7 +21,7 @@ Target DLL:      CMSIS_AGDI.dll V1.31.18.0
 Dialog DLL:      TCM.DLL V1.36.2.0
  
 <h2>Project:</h2>
-Z:\cmpe443_final_project\MATER.uvprojx
+C:\Users\furkan\Desktop\cmpe443_final_project\MATER.uvprojx
 Project File Date:  12/14/2019
 
 <h2>Output:</h2>
@@ -40,8 +40,11 @@ compiling Command.c...
 assembling startup_LPC407x_8x_177x_8x.s...
 compiling system_LPC407x_8x_177x_8x.c...
 linking...
-Program Size: Code=4160 RO-data=260 RW-data=68 ZI-data=1028  
-".\Objects\MATER.axf" - 0 Error(s), 0 Warning(s).
+.\Objects\MATER.axf: Error: L6218E: Undefined symbol FINISH (referred from main.o).
+Not enough information to list image symbols.
+Not enough information to list load addresses in the image map.
+Finished: 2 information, 0 warning and 1 error messages.
+".\Objects\MATER.axf" - 1 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -69,10 +72,11 @@ Package Vendor: Keil
 
    * Component: Keil::Device:Startup:1.0.1
       Include file:  Device\Include\LPC407x_8x_177x_8x.h
+      Source file:   Device\Source\system_LPC407x_8x_177x_8x.c
+      Source file:   Device\Source\ARM\startup_LPC407x_8x_177x_8x.s
       Include file:  Device\Include\system_LPC407x_8x_177x_8x.h
       Include file:  RTE_Driver\Config\RTE_Device.h
-      Source file:   Device\Source\ARM\startup_LPC407x_8x_177x_8x.s
-      Source file:   Device\Source\system_LPC407x_8x_177x_8x.c
+Target not created.
 Build Time Elapsed:  00:00:03
 </pre>
 </body>

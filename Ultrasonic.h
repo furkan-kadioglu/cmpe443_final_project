@@ -4,6 +4,7 @@
 #include "GPIO.h"
 #include "Timer.h"
 #include "SystemStructures.h"
+#include "Command.h"
 
 //Write IOCON Register Address of Trigger Pin.
 #define IOCON_TRIGGER_ADDRESS	0x4002C024
@@ -16,8 +17,7 @@
 extern uint32_t ultrasonicSensorRisingCaptureTime;
 extern uint32_t ultrasonicSensorFallingCaptureTime;
 extern uint32_t ultrasonicSensorDistance;
-extern uint32_t ultrasonicSensorDuration;
-extern uint8_t ultrasonicSensorNewDataAvailable;
+#define SPECIFIED_DISTANCE 250000
 
 extern uint8_t ultrasonicSensorTriggerStart;
 extern uint8_t ultrasonicSensorCaptureRisingEdge;

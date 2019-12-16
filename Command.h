@@ -12,10 +12,10 @@ void TESTING (void);
 void FORWARD (void);
 void BACK (void);
 void STOP (void);
-void RIGHT (void);
-void LEFT (void);
+void RIGHT (uint32_t DEGREE);
+void LEFT (uint32_t DEGREE);
+
 
 void STATUS (void);
-void START (void);
 void FINISH (void);
 
