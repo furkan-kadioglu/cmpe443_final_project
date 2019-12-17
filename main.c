@@ -5,6 +5,7 @@
 #include "Led.h"
 #include "Signal.h"
 #include "ADC.h"
+#include "External.h"
 
 void init() {
 	Joystick_Init();
@@ -14,6 +15,7 @@ void init() {
 	Signal_Init();
 	ADC_Init();
 	ADC_Start();
+	External_Init();
 
 }
 
@@ -80,7 +82,7 @@ void update() {
 	}
 	*/
 	
-	/* COMMANDS & SIGNAL TEST        				DONE
+	//* COMMANDS & SIGNAL TEST        				DONE
 	if(Joystick_Center_Pressed()){
 		STOP();
 	}
@@ -97,7 +99,7 @@ void update() {
 		LEFT(90);
 	}
 	
-	*/
+	
 	
 }
  

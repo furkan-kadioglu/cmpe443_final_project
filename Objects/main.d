@@ -20,3 +20,4 @@
 .\objects\main.o: Led.h
 .\objects\main.o: Signal.h
 .\objects\main.o: ADC.h
+.\objects\main.o: External.h
