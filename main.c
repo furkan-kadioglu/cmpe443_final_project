@@ -12,11 +12,13 @@ void init() {
 	TIMER_Init();
 	LED_Init();
 	Signal_Init();
+	ADC_Init();
+	ADC_Start();
 
 }
 
 void update() {
-	/* AUTO MODE TEST CASE
+	/*AUTO MODE TEST CASE
 	if(Joystick_Center_Pressed()){
 		
 		FINISH();
@@ -34,10 +36,11 @@ void update() {
 		FORWARD();
 		Ultrasonic_Start_Trigger_Timer();
 		
+		
 	}
 	*/
 	
-	/* ADC TEST CASE
+	/* ADC TEST CASE												DONE
 	__WFI();
 	LED1_On();
 	LED2_On();
@@ -57,7 +60,27 @@ void update() {
 	}
 	*/
 	
-	/* COMMANDS & SIGNAL TEST
+	/* ADC TEST CASE 2  										DONE
+	__WFI();
+	LED1_On();
+	LED2_On();
+	LED3_Off();
+	LED4_Off();
+	if(Potentiometer_Last > 0xC00){
+		LED2_Off();
+	}
+	if(Potentiometer_Last > 0xD00){
+		LED1_Off();
+	}
+	if(Potentiometer_Last < 0xA00){
+		LED3_On();
+	}
+	if(Potentiometer_Last < 0x800){
+		LED4_On();
+	}
+	*/
+	
+	/* COMMANDS & SIGNAL TEST        				DONE
 	if(Joystick_Center_Pressed()){
 		STOP();
 	}
@@ -73,8 +96,8 @@ void update() {
 	if(Joystick_Left_Pressed()){
 		LEFT(90);
 	}
-	*/
 	
+	*/
 	
 }
  

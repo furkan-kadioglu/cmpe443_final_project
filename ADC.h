@@ -18,8 +18,8 @@ typedef struct {
 #define ADC_CLOCK_FREQUENCY 1000000
 
 //Write the IOCON address of Analog Pin
-#define	LDR1_IOCON_ADDRESS	0x4002C05C
-#define	LDR2_IOCON_ADDRESS	0x4002C060
+#define	LDR1_IOCON_ADDRESS	0x4002C0F8
+#define	LDR2_IOCON_ADDRESS	0x4002C0FC
 #define	Potentiometer_IOCON_ADDRESS	0x4002C064
 #define LDR1_IOCON	*((volatile uint32_t*)(LDR1_IOCON_ADDRESS))
 #define LDR2_IOCON	*((volatile uint32_t*)(LDR2_IOCON_ADDRESS))

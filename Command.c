@@ -85,3 +85,5 @@ void TESTING (void){
 	MODE = TEST;
 }
 
+void FINISH(){
+}

@@ -438,11 +438,6 @@
               <FilePath>.\Command.c</FilePath>
             </File>
             <File>
-              <FileName>ADC.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\ADC.h</FilePath>
-            </File>
-            <File>
               <FileName>ADC.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\ADC.c</FilePath>

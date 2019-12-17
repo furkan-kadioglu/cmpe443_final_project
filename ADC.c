@@ -7,12 +7,12 @@ uint32_t Potentiometer_Last = 0;
 void ADC_Init() {
 	
 	// IOCON
-	LDR1_IOCON &= ~(0xF << 1 | 1 << 7);
-	LDR2_IOCON &= ~(0xF << 1 | 1 << 7);
+	LDR1_IOCON &= ~(0xE << 1 | 1 << 7);
+	LDR2_IOCON &= ~(0xE << 1 | 1 << 7);
 	Potentiometer_IOCON &= ~(0xF << 1 | 1 << 7);
 	
-	LDR1_IOCON |= 1;
-	LDR2_IOCON |= 1;
+	LDR1_IOCON |= 3;
+	LDR2_IOCON |= 3;
 	Potentiometer_IOCON |= 1;
 	
 	//Turn on ADC.
@@ -30,7 +30,7 @@ void ADC_Init() {
 
 	//Configure CR SEL bits for sampled and converting corresponding pin.
 	ADC->CR &= ~(0xFF);
-	ADC->CR |= 7;
+	ADC->CR |= (4 | 16 | 32);
 	
 	//Enable interrupt for corresponding pin.
 	ADC->INTEN |= (1 << 8);
@@ -52,8 +52,9 @@ void ADC_IRQHandler() {
 	ADC->GDR &= ~((uint32_t)1 << 31);
 	
 	//Write the converted data (only the converted data) to ADC_Last variable.
-	LDR1_Last = (ADC->DR[0] & (0xFFF0)) / 16; 
-	LDR2_Last = (ADC->DR[2] & (0xFFF0)) / 16;
-	Potentiometer_Last = (ADC->DR[2] & (0xFFF0)) / 16; 
+	Potentiometer_Last = (ADC->DR[2] & (0xFFF0)) / 16;
+	LDR1_Last = (ADC->DR[4] & (0xFFF0)) / 16; 
+	LDR2_Last = (ADC->DR[5] & (0xFFF0)) / 16;
+	 
 
 }

@@ -8,6 +8,10 @@ GPIO_TypeDef* TURNING_PORT;
 static uint32_t milisecond_counter = 0;
 
 void Signal_Init(){
+	IOCON_RIGHT_SIGNAL &= ~7;
+	IOCON_LEFT_SIGNAL &= ~7;
+	IOCON_FORWARD_SIGNAL &= ~7;
+	IOCON_BACK_SIGNAL &= ~7;
 
 	NVIC_SetPriority(TIMER1_IRQn,5);
 	

@@ -115,9 +115,11 @@ void TIMER3_IRQHandler() {
 		ultrasonicSensorDistance = (170 * (TIMER3->CR1 - ultrasonicSensorRisingCaptureTime)) ;
 		if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 15000){
 			LEFT(5); // Mater has already moved forward, maybe this call will be optimized.
+			FORWARD();
 		}
 		if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - 15000){
 			RIGHT(5);
+			FORWARD();
 		}
 		
 					
