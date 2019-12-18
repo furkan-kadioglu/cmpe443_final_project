@@ -6,6 +6,7 @@
 #include "Signal.h"
 #include "ADC.h"
 #include "External.h"
+#include "HM10.h"
 
 void init() {
 	Joystick_Init();
@@ -16,6 +17,7 @@ void init() {
 	ADC_Init();
 	ADC_Start();
 	External_Init();
+	Serial_Init();
 
 }
 
@@ -82,7 +84,7 @@ void update() {
 	}
 	*/
 	
-	//* COMMANDS & SIGNAL TEST        				DONE
+	/* COMMANDS & SIGNAL TEST        				DONE
 	if(Joystick_Center_Pressed()){
 		STOP();
 	}
@@ -99,7 +101,28 @@ void update() {
 		LEFT(90);
 	}
 	
+	*/
 	
+	/* Serial Test 1
+	__WFI();
+	if(serialNewDataAvailable){
+		if(!strcmp(serialBuffer, "FORWARD\r\n")){
+			FORWARD();
+		}
+		if(!strcmp(serialBuffer, "BACK\r\n")){
+			BACK();
+		}
+		if(!strcmp(serialBuffer, "STOP\r\n")){
+			STOP();
+		}
+		if(!strcmp(serialBuffer, "RIGHT\r\n")){
+			RIGHT(90);
+		}
+		if(!strcmp(serialBuffer, "LEFT\r\n")){
+			LEFT(90);
+		}
+	}
+	*/
 	
 }
  
