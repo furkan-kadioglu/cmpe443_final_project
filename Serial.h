@@ -66,7 +66,7 @@ static char serialBuffer[10];
 static uint8_t serialNewDataAvailable = 0;
 static uint32_t serialReceiverCurrentIndex = 0;
 
-static char* serialTransmitData = 0;
+extern char* serialTransmitData;
 static uint8_t serialTransmitCompleted = 0;
 
 void Serial_Init(void);

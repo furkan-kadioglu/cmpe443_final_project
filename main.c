@@ -18,7 +18,9 @@ void init() {
 	ADC_Start();
 	External_Init();
 	Serial_Init();
-
+	
+	serialTransmitData = "AT\r\n";
+	Serial_WriteData(*serialTransmitData++);
 }
 
 void update() {
@@ -100,29 +102,34 @@ void update() {
 	if(Joystick_Left_Pressed()){
 		LEFT(90);
 	}
-	
 	*/
 	
-	/* Serial Test 1
+	
+	//* Serial Test 1
 	__WFI();
 	if(serialNewDataAvailable){
 		if(!strcmp(serialBuffer, "FORWARD\r\n")){
 			FORWARD();
+			Clear_serialBuffer();
 		}
 		if(!strcmp(serialBuffer, "BACK\r\n")){
 			BACK();
+			Clear_serialBuffer();
 		}
 		if(!strcmp(serialBuffer, "STOP\r\n")){
 			STOP();
+			Clear_serialBuffer();
 		}
 		if(!strcmp(serialBuffer, "RIGHT\r\n")){
 			RIGHT(90);
+			Clear_serialBuffer();
 		}
 		if(!strcmp(serialBuffer, "LEFT\r\n")){
 			LEFT(90);
+			Clear_serialBuffer();
 		}
 	}
-	*/
+	
 	
 }
  

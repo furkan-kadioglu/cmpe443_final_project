@@ -1,4 +1,5 @@
 #include "Serial.h"
+char* serialTransmitData = 0;
 
 void Serial_Init() {
 	//Change the function of TX and RX pins for UART.
@@ -14,7 +15,7 @@ void Serial_Init() {
 	Serial_UART->FCR |= 1;
 	
 	//In order to change the DLM, DLL and FDR values, Write correct code for enabling the access to Divisor Latches.
-	Serial_UART->LCR |= 7;
+	Serial_UART->LCR |= 128;
 	
 	//Write correct DLM, DLL and FDR values for 115200 baudrate
 	Serial_UART->DLL = 0xD9;
@@ -24,11 +25,11 @@ void Serial_Init() {
 	//DL=13, DIV=5, MUL=7, BR=115200
 	
 	//Write correct code for disabling the access to Divisor Latches.
-	Serial_UART->LCR &=  ~7;
+	Serial_UART->LCR &=  ~128;
 	
-	//Change LCR register value for 8-bit character transfer, 1 stop bits and Even Parity.
-	Serial_UART->LCR &= 0x3F;
-	Serial_UART->LCR |= 0x1B;
+	//Change LCR register value for 8-bit character transfer, 1 stop bits and No Parity.
+	Serial_UART->LCR &= 0xF;
+	Serial_UART->LCR |= 0x3;
 							
 	//Enable the Receive Data Available and THRE Interrupt.
 	Serial_UART->IER |= 3;
@@ -41,7 +42,7 @@ void Serial_Init() {
 }
 
 void UART0_IRQHandler() {	
-	uint32_t currentInterrupt = (Serial_UART->IIR & 0xE)/2;
+	uint32_t currentInterrupt = (Serial_UART->IIR & 0xE)/2; 
 	
 	// Receive Data Available interrupt.
 	if(currentInterrupt == 0x2) {
@@ -60,7 +61,7 @@ void UART0_IRQHandler() {
 	}
 }
 
-void Clear_Serial_Buffer(){
+void Clear_serialBuffer(){
 	serialReceiverCurrentIndex = 0;
 	strcpy(serialBuffer,"");
 }
