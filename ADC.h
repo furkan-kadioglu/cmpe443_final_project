@@ -37,6 +37,7 @@ typedef struct {
 extern uint32_t LDR1_Last;
 extern uint32_t LDR2_Last;
 extern uint32_t Potentiometer_Last;
+extern uint8_t ADC_Available;
 
 void ADC_Init(void);
 void ADC_Start(void);
