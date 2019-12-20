@@ -21,6 +21,10 @@
 #define FORWARD_SIGNAL_MASK (1 << 3)
 #define BACK_SIGNAL_MASK		(1 << 2)
 
+extern uint8_t TURN_ON;
+extern uint32_t TURNING_MASK;
+extern GPIO_TypeDef* TURNING_PORT;
+
 void Signal_Init(void);
 void Start_Signal(GPIO_TypeDef* PORT, uint32_t MASK);
 void Finish_Signal(void);

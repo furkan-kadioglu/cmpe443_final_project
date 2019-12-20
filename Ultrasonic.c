@@ -7,6 +7,7 @@ uint32_t ultrasonicSensorDistance = 0;
 
 uint8_t ultrasonicSensorTriggerStart = 0;
 uint8_t ultrasonicSensorCaptureRisingEdge = 0;
+uint8_t  ultrasonicAvailable = 0;
 
 void Ultrasonic_Init() {
 	IOCON_TRIGGER |= 0x03;
@@ -111,8 +112,9 @@ void TIMER3_IRQHandler() {
 		ultrasonicSensorCaptureRisingEdge = 0;
 	}
 	else {
-		
+		ultrasonicAvailable = 1;
 		ultrasonicSensorDistance = (170 * (TIMER3->CR1 - ultrasonicSensorRisingCaptureTime)) ;
+		/*
 		if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 15000){
 			LEFT(5); // Mater has already moved forward, maybe this call will be optimized.
 			FORWARD();
@@ -121,7 +123,7 @@ void TIMER3_IRQHandler() {
 			RIGHT(5);
 			FORWARD();
 		}
-		
+		*/
 					
 		LPC_TIM3->CCR = (1 << 3) | (1 << 5);
 		ultrasonicSensorCaptureRisingEdge = 1;

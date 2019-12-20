@@ -3,6 +3,7 @@
 uint32_t LDR1_Last = 0;
 uint32_t LDR2_Last = 0;
 uint32_t Potentiometer_Last = 0;
+uint8_t ADC_Available = 0;
 
 void ADC_Init() {
 	
@@ -41,7 +42,7 @@ void ADC_Init() {
 }
 
 void ADC_Start () {
-	//Write a code for starting A/D conversion on a rising edge on the TIMER 0 MATCH 1.
+	//Write a code for starting A/D conversion on a rising edge on the TIMER 1 MATCH 1.
 	ADC->CR &= ~(0xF << 24);
 	ADC->CR |= (7 << 24);
 
@@ -55,6 +56,7 @@ void ADC_IRQHandler() {
 	Potentiometer_Last = (ADC->DR[2] & (0xFFF0)) / 16;
 	LDR1_Last = (ADC->DR[4] & (0xFFF0)) / 16; 
 	LDR2_Last = (ADC->DR[5] & (0xFFF0)) / 16;
+	ADC_Available = 1;
 	 
 
 }
