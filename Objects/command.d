@@ -14,3 +14,7 @@
 .\objects\command.o: GPIO.h
 .\objects\command.o: Signal.h
 .\objects\command.o: Signal.h
+.\objects\command.o: HM10.h
+.\objects\command.o: Serial.h
+.\objects\command.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\command.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h

@@ -447,6 +447,21 @@
               <FileType>1</FileType>
               <FilePath>.\External.c</FilePath>
             </File>
+            <File>
+              <FileName>Serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>HM10.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\HM10.c</FilePath>
+            </File>
+            <File>
+              <FileName>TEST.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\TEST.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -41,7 +41,7 @@ void ADC_Init() {
 }
 
 void ADC_Start () {
-	//Write a code for starting A/D conversion on a rising edge on the TIMER 0 MATCH 1.
+	//Write a code for starting A/D conversion on a rising edge on the TIMER 1 MATCH 1.
 	ADC->CR &= ~(0xF << 24);
 	ADC->CR |= (7 << 24);
 

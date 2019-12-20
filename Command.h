@@ -2,6 +2,8 @@
 
 #include "MOTOR.h"
 #include "Signal.h"
+#include "HM10.h"
+
 
 enum MODES {TEST, AUTO};
 static uint32_t MODE = TEST;
