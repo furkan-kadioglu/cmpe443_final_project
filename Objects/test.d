@@ -18,11 +18,11 @@
 .\objects\test.o: PWM.h
 .\objects\test.o: Signal.h
 .\objects\test.o: Signal.h
-.\objects\test.o: Led.h
-.\objects\test.o: Signal.h
-.\objects\test.o: ADC.h
-.\objects\test.o: External.h
 .\objects\test.o: HM10.h
 .\objects\test.o: Serial.h
 .\objects\test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\test.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\test.o: Led.h
+.\objects\test.o: Signal.h
+.\objects\test.o: ADC.h
+.\objects\test.o: External.h

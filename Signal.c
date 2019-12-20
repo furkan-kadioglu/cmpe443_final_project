@@ -58,7 +58,7 @@ void TIMER1_IRQHandler() {
 	TIMER1->IR |= 2;
 	
 	milisecond_counter ++;
-	if(milisecond_counter == 5){
+	if(milisecond_counter == 3){
 		
 		if(TURN_ON){
 			TURNING_PORT->CLR |= TURNING_MASK;

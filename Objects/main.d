@@ -18,11 +18,11 @@
 .\objects\main.o: PWM.h
 .\objects\main.o: Signal.h
 .\objects\main.o: Signal.h
-.\objects\main.o: Led.h
-.\objects\main.o: Signal.h
-.\objects\main.o: ADC.h
-.\objects\main.o: External.h
 .\objects\main.o: HM10.h
 .\objects\main.o: Serial.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+.\objects\main.o: Led.h
+.\objects\main.o: Signal.h
+.\objects\main.o: ADC.h
+.\objects\main.o: External.h
