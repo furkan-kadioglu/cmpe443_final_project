@@ -1,4 +1,5 @@
 .\objects\main.o: main.c
+.\objects\main.o: TEST.h
 .\objects\main.o: C:\Users\furkan\AppData\Local\Arm\Packs\Keil\LPC4000_DFP\2.1.0\Device\Include\LPC407x_8x_177x_8x.h
 .\objects\main.o: C:\Users\furkan\AppData\Local\Arm\Packs\ARM\CMSIS\5.5.1\CMSIS\Core\Include\core_cm4.h
 .\objects\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdint.h

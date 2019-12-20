@@ -24,7 +24,7 @@
 #define MAX_MOTOR_DUTY_CYCLE 90
 static uint32_t MOTOR_POWER_IN_PERCENT = 50;
 
-#define NUMBER_OF_CYCLE_PER_DEGREE 100
+#define NUMBER_OF_CYCLE_PER_DEGREE 140
 static uint32_t DEGREE_OF_TURN = 1;
 static uint32_t NUMBER_OF_TURN = 0;	
 

@@ -6,6 +6,8 @@
 
 extern uint8_t HM10_Connected;
 
+void Request(char* request);
+void Response(void);
 void HM10_Init(void);
 uint8_t HM10_Check_Connection(void);
 

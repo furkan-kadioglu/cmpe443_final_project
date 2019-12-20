@@ -457,6 +457,11 @@
               <FileType>1</FileType>
               <FilePath>.\HM10.c</FilePath>
             </File>
+            <File>
+              <FileName>TEST.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\TEST.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

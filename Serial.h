@@ -72,9 +72,6 @@ extern uint8_t serialTransmitCompleted;
 void Serial_Init(void);
 void Serial_WriteData(char data);
 void Clear_serialBuffer(void);
-
-#define p2 *((volatile uint32_t *) 0x4002C008)
-#define p3 *((volatile uint32_t *) 0x4002C00C)
 	
 
 #endif

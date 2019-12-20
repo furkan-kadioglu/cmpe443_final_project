@@ -4,7 +4,7 @@ uint8_t serialNewDataAvailable = 0;
 uint32_t serialReceiverCurrentIndex = 0;
 
 char* serialTransmitData;
-uint8_t serialTransmitCompleted = 0;
+uint8_t serialTransmitCompleted = 1;
 
 void Serial_Init() {
 	//Change the function of TX and RX pins for UART.
@@ -12,10 +12,6 @@ void Serial_Init() {
 	Serial_UART_TX_PIN |= 4;
 	Serial_UART_RX_PIN |= 4; 
 	Serial_UART_RX_PIN &= ~3;
-	p2 &= ~7;
-	p3 &= ~7;
-	p2 |= 1;
-	p3 |= 1;
 	
 	//Turn on UART0.
 	PCONP |= 8;
