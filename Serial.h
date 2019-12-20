@@ -62,15 +62,19 @@ typedef struct
 #define Serial_UART_RX_PIN_ADDRESS	0x4002C004
 #define Serial_UART_RX_PIN	*((volatile uint32_t*)(Serial_UART_RX_PIN_ADDRESS))
 
-static char serialBuffer[10];
-static uint8_t serialNewDataAvailable = 0;
-static uint32_t serialReceiverCurrentIndex = 0;
+extern char serialBuffer[10];
+extern uint8_t serialNewDataAvailable;
+extern uint32_t serialReceiverCurrentIndex;
 
 extern char* serialTransmitData;
-static uint8_t serialTransmitCompleted = 0;
+extern uint8_t serialTransmitCompleted;
 
 void Serial_Init(void);
 void Serial_WriteData(char data);
 void Clear_serialBuffer(void);
+
+#define p2 *((volatile uint32_t *) 0x4002C008)
+#define p3 *((volatile uint32_t *) 0x4002C00C)
+	
 
 #endif

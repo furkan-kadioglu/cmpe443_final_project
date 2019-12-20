@@ -4,8 +4,10 @@
 #include "LPC407x_8x_177x_8x.h"
 #include "Serial.h"
 
+extern uint8_t HM10_Connected;
+
 void HM10_Init(void);
-void HM10_Check_Connection(void);
+uint8_t HM10_Check_Connection(void);
 
 
 #endif

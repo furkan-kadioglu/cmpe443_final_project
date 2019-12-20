@@ -8,6 +8,7 @@
 #include "External.h"
 #include "HM10.h"
 
+
 void init() {
 	Joystick_Init();
 	MOTOR_Init();
@@ -18,9 +19,11 @@ void init() {
 	ADC_Start();
 	External_Init();
 	Serial_Init();
-	
-	serialTransmitData = "AT\r\n";
-	Serial_WriteData(*serialTransmitData++);
+		
+	HM10_Init();
+	// Serial Test 1
+	//Ultrasonic_Init();
+	//Ultrasonic_Start_Trigger_Timer();
 }
 
 void update() {
@@ -104,8 +107,19 @@ void update() {
 	}
 	*/
 	
+	/* Serial Test 2
+	__WFI(); 
+	if(serialNewDataAvailable){
+		
+		serialNewDataAvailable = 0;
+		serialTransmitData = serialBuffer;
+		Serial_WriteData(*serialTransmitData++);
+		
+	}
+	*/
 	
-	//* Serial Test 1
+	
+	/* Serial Test 3*/
 	__WFI();
 	if(serialNewDataAvailable){
 		if(!strcmp(serialBuffer, "FORWARD\r\n")){
@@ -130,6 +144,32 @@ void update() {
 		}
 	}
 	
+	
+	
+	/* Ultrasonic Test
+	__WFI();
+	if(ultrasonicAvailable){
+		ultrasonicAvailable = 0;
+		LED1_Off();
+		LED2_Off();
+		LED3_Off();
+		LED4_Off();
+			
+		
+		if(ultrasonicSensorDistance < 300000){
+			LED1_On();
+		}
+		if(ultrasonicSensorDistance < 200000){
+			LED2_On();
+		}
+		if(ultrasonicSensorDistance < 120000){
+			LED3_On();
+		}
+		if(ultrasonicSensorDistance < 70000){
+			LED4_On();
+		}
+	}
+	*/
 	
 }
  

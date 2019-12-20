@@ -1,5 +1,10 @@
 #include "Serial.h"
-char* serialTransmitData = 0;
+char serialBuffer[10];
+uint8_t serialNewDataAvailable = 0;
+uint32_t serialReceiverCurrentIndex = 0;
+
+char* serialTransmitData;
+uint8_t serialTransmitCompleted = 0;
 
 void Serial_Init() {
 	//Change the function of TX and RX pins for UART.
@@ -7,6 +12,10 @@ void Serial_Init() {
 	Serial_UART_TX_PIN |= 4;
 	Serial_UART_RX_PIN |= 4; 
 	Serial_UART_RX_PIN &= ~3;
+	p2 &= ~7;
+	p3 &= ~7;
+	p2 |= 1;
+	p3 |= 1;
 	
 	//Turn on UART0.
 	PCONP |= 8;
@@ -28,7 +37,7 @@ void Serial_Init() {
 	Serial_UART->LCR &=  ~128;
 	
 	//Change LCR register value for 8-bit character transfer, 1 stop bits and No Parity.
-	Serial_UART->LCR &= 0xF;
+	Serial_UART->LCR &= ~0xF;
 	Serial_UART->LCR |= 0x3;
 							
 	//Enable the Receive Data Available and THRE Interrupt.
@@ -47,6 +56,7 @@ void UART0_IRQHandler() {
 	// Receive Data Available interrupt.
 	if(currentInterrupt == 0x2) {
 		serialBuffer[serialReceiverCurrentIndex++] = Serial_UART->RBR;
+		serialBuffer[serialReceiverCurrentIndex] = 0;
 		serialNewDataAvailable = 1;
 	}
 	
@@ -56,6 +66,7 @@ void UART0_IRQHandler() {
 			Serial_WriteData(*serialTransmitData++);
 		}
 		else {
+			Clear_serialBuffer();
 			serialTransmitCompleted = 1;
 		}
 	}
