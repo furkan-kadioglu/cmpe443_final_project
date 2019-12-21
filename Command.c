@@ -4,6 +4,9 @@
 uint32_t DEGREE_OF_TURN = 1;
 uint32_t NUMBER_OF_TURN = 0;
 
+uint32_t MODE = TEST;
+uint32_t MOVEMENT_DIR = STOPPED;
+uint32_t isStoppedForLight = 0;
 
 void FORWARD(){
 	
@@ -110,7 +113,13 @@ void TESTING (void){
 	MODE = TEST;
 }
 
-void FINISH(){
+void STATUS (void) {
+	sprintf(serialBuffer, "{\"distance\":%d,\"light_level_left\":%d,\"light_level_right\":%d,\"op_mode\":\"%s\"}\r\n", ultrasonicSensorDistance, LDR1_Last, LDR2_Last, stringFromMode(MODE));
+	Response();
+}
+
+void FINISH(void){
+	STOP();
 	Request("FINISH\r\n");
 }
 

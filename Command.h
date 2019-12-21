@@ -3,10 +3,23 @@
 #include "MOTOR.h"
 #include "Signal.h"
 #include "HM10.h"
+#include "ADC.h"
 
 
 enum MODES {TEST, AUTO};
-static uint32_t MODE = TEST;
+extern uint32_t MODE;
+static inline char *stringFromMode(uint32_t mode)
+{
+    static char *strings[] = { "TEST", "AUTO"};
+    return strings[mode];
+}
+
+enum MOVEMENT_DIRS {MOVING_FORWARD, MOVING_BACKWARD, TURNING_LEFT, TURNING_RIGHT, STOPPED};
+extern uint32_t MOVEMENT_DIR;
+
+extern uint32_t isStoppedForLight;
+
+extern uint32_t ultrasonicSensorDistance;
 
 void AUTONOMOUS (void);
 void TESTING (void);
