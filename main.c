@@ -42,8 +42,8 @@ void update() {
 		}
 	}
 	if(ADC_Available){
-		//MOTOR_POWER_IN_PERCENT = (Potentiometer_Last*100) / 0xFFF;
-		//SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
+		MOTOR_POWER_IN_PERCENT = (Potentiometer_Last*100) / 0xFFF;
+		SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
 	}
 	
 	
