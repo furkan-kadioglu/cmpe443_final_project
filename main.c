@@ -55,12 +55,12 @@ void update() {
 			}
 			
 			if(!strcmp(serialBuffer, "AUTO\r\n")){ 
-				Request("AUTO\r\n");
+				Request("AUTO\r\nAUTONOMOUS\r\n");
 				AUTONOMOUS();
 			}
 			
 			if(!strcmp(serialBuffer, "TEST\r\n")){
-				Request("TEST\r\n");
+				Request("TEST\r\nTESTING\r\n");
 				TESTING();
 			}
 			
