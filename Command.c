@@ -1,9 +1,12 @@
 #include "Command.h"
 
-#define NUMBER_OF_CYCLE_PER_DEGREE 6
 uint32_t DEGREE_OF_TURN = 1;
 uint32_t NUMBER_OF_TURN = 0;
+uint32_t REMAINING_DEGREE_OF_TURN = 0;
 
+uint32_t MODE = TEST;
+uint32_t MOVEMENT_DIR = STOPPED;
+uint32_t isStoppedForLight = 0;
 
 void FORWARD(){
 	
@@ -21,6 +24,7 @@ void FORWARD(){
 	FORWARD_SIGNAL_PORT->SET |= FORWARD_SIGNAL_MASK;
 	Finish_Signal();
 	
+	MOVEMENT_DIR = MOVING_FORWARD;
 }
 
 void BACK (){
@@ -38,6 +42,8 @@ void BACK (){
 	BACK_SIGNAL_PORT->SET |= BACK_SIGNAL_MASK;
 	FORWARD_SIGNAL_PORT->CLR |= FORWARD_SIGNAL_MASK;
 	Finish_Signal();
+	
+	MOVEMENT_DIR = MOVING_BACKWARD;
 }
 
 void STOP(){
@@ -77,6 +83,7 @@ void RIGHT(uint32_t DEGREE){
 	FORWARD_SIGNAL_PORT->CLR |= FORWARD_SIGNAL_MASK;
 	Start_Signal(RIGHT_SIGNAL_PORT, RIGHT_SIGNAL_MASK);
 	
+	MOVEMENT_DIR = TURNING_RIGHT;
 }
 
 void LEFT(uint32_t DEGREE){
@@ -101,6 +108,7 @@ void LEFT(uint32_t DEGREE){
 	FORWARD_SIGNAL_PORT->CLR |= FORWARD_SIGNAL_MASK;
 	Start_Signal(LEFT_SIGNAL_PORT, LEFT_SIGNAL_MASK);
 	
+	MOVEMENT_DIR = TURNING_LEFT;
 }
 
 void AUTONOMOUS (void){
@@ -110,7 +118,15 @@ void TESTING (void){
 	MODE = TEST;
 }
 
-void FINISH(){
+void STATUS (void) {
+	sprintf(serialBuffer, 
+	"{\"distance\":%d,\"light_level_left\":%d,\"light_level_right\":%d,\"op_mode\":\"%s\"}\r\n", 
+	ultrasonicSensorDistance, LDR1_Last_Light_Level, LDR2_Last_Light_Level, stringFromMode(MODE));
+	Response();
+}
+
+void FINISH(void){
+	STOP();
 	Request("FINISH\r\n");
 }
 
@@ -120,18 +136,14 @@ void PWM0_IRQHandler(){
 	NUMBER_OF_TURN += 4;
 	
 	if(NUMBER_OF_TURN >= NUMBER_OF_CYCLE_PER_DEGREE * DEGREE_OF_TURN){
-		// Turn off interrupt
-		PWM_MOTOR->MCR &= ~1;
-		NVIC_DisableIRQ(PWM0_IRQn);
-		
-		MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
-		MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
-		MOTOR_DRIVER_IN3_PORT->SET |= MOTOR_DRIVER_IN3_MASK;
-		MOTOR_DRIVER_IN4_PORT->SET |= MOTOR_DRIVER_IN4_MASK;
-		
-		Finish_Signal();
-		NUMBER_OF_TURN = 0;
+		STOP();
+		MOVEMENT_DIR = STOPPED;
 	}
+}
+
+uint32_t CALC_REMAINING_DEGREE_OF_TURN(){
+	REMAINING_DEGREE_OF_TURN = DEGREE_OF_TURN - NUMBER_OF_TURN/NUMBER_OF_CYCLE_PER_DEGREE;
+	return REMAINING_DEGREE_OF_TURN;
 }
 
 

@@ -5,6 +5,9 @@ uint32_t LDR2_Last = 0;
 uint32_t Potentiometer_Last = 0;
 uint8_t ADC_Available = 0;
 
+uint32_t LDR1_Last_Light_Level = 0;
+uint32_t LDR2_Last_Light_Level = 0;
+
 void ADC_Init() {
 	
 	// IOCON
@@ -59,4 +62,8 @@ void ADC_IRQHandler() {
 	ADC_Available = 1;
 	 
 
+}
+
+uint32_t Calc_LDR_Light_Level(uint32_t LDR_Last){
+	return 1024 - (LDR_Last * 1024 / 0xFFF);
 }
