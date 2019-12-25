@@ -30,31 +30,27 @@ void update() {
 			
 			if(!strcmp(serialBuffer, "FORWARD\r\n")){
 				Request("FORWARD\r\n");
-				MOVEMENT_DIR = MOVING_FORWARD;
 				FORWARD();
 			}
 			
 			if(!strcmp(serialBuffer, "BACK\r\n")){
 				Request("BACK\r\n");
-				MOVEMENT_DIR = MOVING_BACKWARD;
 				BACK();
 			}				
 			
 			if(!strcmp(serialBuffer, "STOP\r\n")){
 				Request("STOP\r\n");
-				MOVEMENT_DIR = STOPPED;
 				STOP();		
+				MOVEMENT_DIR = STOPPED;
 			}
 			
 			if(!strcmp(serialBuffer, "RIGHT\r\n")){
 				Request("RIGHT\r\n");
-				MOVEMENT_DIR = TURNING_RIGHT;
 				RIGHT(90);
 			}				
 			
 			if(!strcmp(serialBuffer, "LEFT\r\n")){
 				Request("LEFT\r\n");
-				MOVEMENT_DIR = TURNING_LEFT;
 				LEFT(90);
 			}
 			
@@ -76,34 +72,41 @@ void update() {
 			Clear_serialBuffer();
 		}
 	}
+	
 	if(ADC_Available){
+		/*
 		// Potentiometer - Motor Speed
 		MOTOR_POWER_IN_PERCENT = (Potentiometer_Last*100) / 0xFFF;
 		SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
+		*/
 		
 		// LDR - Start/Stop
+		LDR1_Last_Light_Level = Calc_LDR_Light_Level(LDR1_Last);
+		LDR2_Last_Light_Level = Calc_LDR_Light_Level(LDR2_Last);
 		if(MODE == TEST){
 			if(MOVEMENT_DIR != STOPPED){
-				if(isStoppedForLight && LDR1_Last < 300 && LDR2_Last < 300){
+				if(isStoppedForLight && LDR1_Last_Light_Level < 300 && LDR2_Last_Light_Level < 300){
 					isStoppedForLight = 0;
 					if(MOVEMENT_DIR == MOVING_FORWARD) {
 						FORWARD();
 					}else if(MOVEMENT_DIR == MOVING_BACKWARD) {
 						BACK();
 					}else if(MOVEMENT_DIR == TURNING_RIGHT){
-						RIGHT(5);
+						CALC_REMAINING_DEGREE_OF_TURN();
+						RIGHT(REMAINING_DEGREE_OF_TURN);
 					}else if(MOVEMENT_DIR == TURNING_LEFT){
-						LEFT(5);
+						CALC_REMAINING_DEGREE_OF_TURN();
+						LEFT(REMAINING_DEGREE_OF_TURN);
 					}
 				}
-				if(!isStoppedForLight && (LDR1_Last > 300 || LDR2_Last > 300)){
+				if(!isStoppedForLight && (LDR1_Last_Light_Level > 300 || LDR2_Last_Light_Level > 300)){
 					isStoppedForLight = 1;
 					STOP();
 				}
- 			}
+			}
 		}else{
 			if(MOVEMENT_DIR != STOPPED){
-				if(LDR1_Last > 300 || LDR2_Last > 300){
+				if(LDR1_Last_Light_Level > 300 || LDR2_Last_Light_Level > 300){
 					FINISH();
 					MOVEMENT_DIR = STOPPED;
 				}

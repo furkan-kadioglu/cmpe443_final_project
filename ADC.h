@@ -43,4 +43,8 @@ void ADC_Init(void);
 void ADC_Start(void);
 void ADC_Stop(void);
 
+uint32_t Calc_LDR_Light_Level(uint32_t LDR_Last);
+extern uint32_t LDR1_Last_Light_Level;
+extern uint32_t LDR2_Last_Light_Level;
+
 #endif
