@@ -1,11 +1,10 @@
 #include "TEST.h"
 
-void init() {
-	Joystick_Init(); //Actually, should be turned off at DEMO
 
+void init() {
+	
 	MOTOR_Init();
 	TIMER_Init();
-	LED_Init(); //Actually, should be turned off at DEMO
 	Signal_Init();
 	ADC_Init();
 	ADC_Start();
@@ -14,9 +13,9 @@ void init() {
 	Serial_Init();
 	HM10_Init();
 
-	//Ultrasonic_Init();
+	Ultrasonic_Init();
 	// Trigger should be started at AUTO mode for the sake of power consumption
-	//Ultrasonic_Start_Trigger_Timer();
+	Ultrasonic_Start_Trigger_Timer();
 }
 
 void update() {
@@ -41,16 +40,17 @@ void update() {
 			if(!strcmp(serialBuffer, "STOP\r\n")){
 				Request("STOP\r\n");
 				STOP();
-				MOVEMENT_DIR = STOPPED;
 			}
 
 			if(!strcmp(serialBuffer, "RIGHT\r\n")){
 				Request("RIGHT\r\n");
+				NUMBER_OF_TURN = 0;
 				RIGHT();
 			}
 
 			if(!strcmp(serialBuffer, "LEFT\r\n")){
 				Request("LEFT\r\n");
+				NUMBER_OF_TURN = 0;
 				LEFT();
 			}
 
@@ -65,8 +65,12 @@ void update() {
 			}
 
 			if(!strcmp(serialBuffer, "STATUS\r\n")){
-				Request("STATUS\r\n");
 				STATUS();
+			}
+			
+			if(!strcmp(serialBuffer, "START\r\n")){
+				Request("START\r\n");
+				START();
 			}
 
 			Clear_serialBuffer();
@@ -74,41 +78,56 @@ void update() {
 	}
 
 	if(ADC_Available){
-		/*
+		
+		ADC_Available = 0;
 		// Potentiometer - Motor Speed
 		MOTOR_POWER_IN_PERCENT = (Potentiometer_Last*100) / 0xFFF;
-		SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
-		*/
+		
+		if(MOTOR_ON)
+			SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
+		
 
 		// LDR - Start/Stop
-		LDR1_Last_Light_Level = Calc_LDR_Light_Level(LDR1_Last);
-		LDR2_Last_Light_Level = Calc_LDR_Light_Level(LDR2_Last);
+		LDR1_Last_Light_Level = Get_LDR_Light_Level(LDR1_Last);
+		LDR2_Last_Light_Level = Get_LDR_Light_Level(LDR2_Last);
+		
 		if(MODE == TEST){
-			if(MOVEMENT_DIR != STOPPED){
-				if(isStoppedForLight && LDR1_Last_Light_Level < 300 && LDR2_Last_Light_Level < 300){
-					isStoppedForLight = 0;
-					if(MOVEMENT_DIR == MOVING_FORWARD) {
-						FORWARD();
-					}else if(MOVEMENT_DIR == MOVING_BACKWARD) {
-						BACK();
-					}else if(MOVEMENT_DIR == TURNING_RIGHT){
-						RIGHT();
-					}else if(MOVEMENT_DIR == TURNING_LEFT){
-						LEFT();
-					}
+			
+			if(LDR1_Last_Light_Level > 500 || LDR2_Last_Light_Level > 500){
+				
+				MOTOR_ON = 0;
+				SET_MOTOR_POWER(0, 0);
+				
+				// Turn off signals
+				BACK_SIGNAL_PORT->CLR |= BACK_SIGNAL_MASK;
+				FORWARD_SIGNAL_PORT->CLR |= FORWARD_SIGNAL_MASK;
+				Finish_Signal();
+				
+				photon_detected = 1;
+			}
+			
+			else{
+				if(photon_detected){
+					photon_detected = 0;
+					if(ACTION == FORWARD_ACTION) FORWARD();
+					if(ACTION == BACK_ACTION) 	 BACK();
+					if(ACTION == RIGHT_ACTION)   RIGHT();
+					if(ACTION == LEFT_ACTION) 	 LEFT();
+					if(ACTION == STOP_ACTION) 	 STOP();
 				}
-				if(!isStoppedForLight && (LDR1_Last_Light_Level > 300 || LDR2_Last_Light_Level > 300)){
-					isStoppedForLight = 1;
+				
+			}
+		}
+		
+		else{
+			if(race_start){		
+				if(LDR1_Last_Light_Level > 500 || LDR2_Last_Light_Level > 500){
+					race_start = 0;
 					STOP();
-				}
-			}
-		}else{
-			if(MOVEMENT_DIR != STOPPED){
-				if(LDR1_Last_Light_Level > 300 || LDR2_Last_Light_Level > 300){
 					FINISH();
-					MOVEMENT_DIR = STOPPED;
 				}
 			}
+			
 		}
 	}
 

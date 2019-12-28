@@ -1,6 +1,9 @@
 #include "MOTOR.h"
 #include "GPIO.h"
 
+uint32_t MOTOR_POWER_IN_PERCENT = 50;
+uint8_t MOTOR_ON = 0;
+
 void MOTOR_Init() {
 	//Change the function of the pin in here:
 	IOCON_RIGHT_MOTORS &= ~4;

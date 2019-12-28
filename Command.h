@@ -1,7 +1,6 @@
 #include "LPC407x_8x_177x_8x.h"
 
 #include "MOTOR.h"
-#include "Signal.h"
 #include "HM10.h"
 #include "ADC.h"
 
@@ -13,13 +12,12 @@ static inline char *stringFromMode(uint32_t mode)
     return strings[mode];
 }
 
-enum MOVEMENT_DIRS {MOVING_FORWARD, MOVING_BACKWARD, TURNING_LEFT, TURNING_RIGHT, STOPPED};
-extern uint32_t MOVEMENT_DIR;
+enum LAST_ACTIONS {STOP_ACTION, FORWARD_ACTION, BACK_ACTION, LEFT_ACTION, RIGHT_ACTION};
+extern uint32_t ACTION;
 
-extern uint32_t isStoppedForLight;
-
+extern uint8_t photon_detected;
+extern uint8_t race_start;
 extern uint32_t NUMBER_OF_TURN;
-
 extern uint32_t ultrasonicSensorDistance;
 
 void AUTONOMOUS (void);
@@ -32,4 +30,5 @@ void RIGHT (void);
 void LEFT (void);
 
 void STATUS (void);
+void START (void);
 void FINISH (void);

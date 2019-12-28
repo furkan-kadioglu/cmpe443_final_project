@@ -66,7 +66,7 @@ void Command_Test(){
 	
 	if(Joystick_Up_Pressed())			FORWARD();
 	
-	if(Joystick_Right_Pressed())	RIGHT(90);
+	if(Joystick_Right_Pressed())	RIGHT();
 	
-	if(Joystick_Left_Pressed())		LEFT(90);
+	if(Joystick_Left_Pressed())		LEFT();
 }

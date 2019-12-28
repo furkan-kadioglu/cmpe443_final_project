@@ -1,9 +1,7 @@
 #ifndef ULTRASONIC_H
 #define ULTRASONIC_H
 
-#include "GPIO.h"
 #include "Timer.h"
-#include "SystemStructures.h"
 #include "Command.h"
 
 //Write IOCON Register Address of Trigger Pin.

@@ -22,7 +22,8 @@
 #define MOTOR_DRIVER_IN4_MASK (1 << 21)
 
 #define MAX_MOTOR_DUTY_CYCLE 90
-static uint32_t MOTOR_POWER_IN_PERCENT = 50;
+extern uint32_t MOTOR_POWER_IN_PERCENT;
+extern uint8_t MOTOR_ON;
 
 
 #define AUTO_DUTY_CYCLE 50
