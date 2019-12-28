@@ -25,8 +25,6 @@ void Clear_Action(){
 void FORWARD(){
 	
 	Clear_Action();
-
-	ACTION = FORWARD_ACTION;
 	
 	// Set Motor
 	MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
@@ -44,8 +42,6 @@ void FORWARD(){
 void BACK (){
 
 	Clear_Action();
-	
-	ACTION = BACK_ACTION;
 
 	// Set Motor
 	MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
@@ -63,14 +59,12 @@ void BACK (){
 void STOP(){
 
 	Clear_Action();
-	ACTION = STOP_ACTION;
 	SET_MOTOR_POWER(0, 0);
+	race_start = 0;
 	
 }
 
 void RIGHT(){
-	
-	ACTION = RIGHT_ACTION;
 	
 	// Set Interrupt for 90 degrees
 	NVIC_EnableIRQ(EINT0_IRQn);
@@ -87,11 +81,12 @@ void RIGHT(){
 	// Set Signal
 	Start_Signal(RIGHT_SIGNAL_PORT, RIGHT_SIGNAL_MASK);
 
+	
+	
+
 }
 
 void LEFT(){
-	
-	ACTION = LEFT_ACTION;
 	
 	// Set Interrupt for 90 degrees
 	NVIC_EnableIRQ(EINT0_IRQn);
@@ -113,6 +108,9 @@ void LEFT(){
 
 void START(void){
 	race_start = 1;
+	FORWARD(); // Optimize it!! for race
+	SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE);
+	
 }
 
 void AUTONOMOUS (void){

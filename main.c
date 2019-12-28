@@ -14,8 +14,7 @@ void init() {
 	HM10_Init();
 
 	Ultrasonic_Init();
-	// Trigger should be started at AUTO mode for the sake of power consumption
-	Ultrasonic_Start_Trigger_Timer();
+	
 }
 
 void update() {
@@ -29,29 +28,44 @@ void update() {
 
 			if(!strcmp(serialBuffer, "FORWARD\r\n")){
 				Request("FORWARD\r\n");
-				FORWARD();
+				
+				ACTION = FORWARD_ACTION;
+				if(!photon_detected)
+					FORWARD();
 			}
 
 			if(!strcmp(serialBuffer, "BACK\r\n")){
 				Request("BACK\r\n");
-				BACK();
+				
+				ACTION = BACK_ACTION;
+				if(!photon_detected)
+					BACK();
 			}
 
 			if(!strcmp(serialBuffer, "STOP\r\n")){
 				Request("STOP\r\n");
-				STOP();
+				
+				ACTION = STOP_ACTION;
+				if(!photon_detected)
+					STOP();
 			}
 
 			if(!strcmp(serialBuffer, "RIGHT\r\n")){
 				Request("RIGHT\r\n");
 				NUMBER_OF_TURN = 0;
-				RIGHT();
+				
+				ACTION = RIGHT_ACTION;
+				if(!photon_detected)
+					RIGHT();
 			}
 
 			if(!strcmp(serialBuffer, "LEFT\r\n")){
 				Request("LEFT\r\n");
 				NUMBER_OF_TURN = 0;
-				LEFT();
+				
+				ACTION = LEFT_ACTION;
+				if(!photon_detected)
+					LEFT();
 			}
 
 			if(!strcmp(serialBuffer, "AUTO\r\n")){
@@ -68,9 +82,10 @@ void update() {
 				STATUS();
 			}
 			
-			if(!strcmp(serialBuffer, "START\r\n")){
+			if(!strcmp(serialBuffer, "START\r\n") && MODE == AUTO){
 				Request("START\r\n");
 				START();
+				Ultrasonic_Start_Trigger_Timer();
 			}
 
 			Clear_serialBuffer();
@@ -80,12 +95,15 @@ void update() {
 	if(ADC_Available){
 		
 		ADC_Available = 0;
+		
 		// Potentiometer - Motor Speed
-		MOTOR_POWER_IN_PERCENT = (Potentiometer_Last*100) / 0xFFF;
-		
-		if(MOTOR_ON)
-			SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
-		
+		if(MODE == TEST){
+			
+			MOTOR_POWER_IN_PERCENT = (Potentiometer_Last*100) / 0xFFF;
+			
+			if(MOTOR_ON)
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);		
+		}
 
 		// LDR - Start/Stop
 		LDR1_Last_Light_Level = Get_LDR_Light_Level(LDR1_Last);

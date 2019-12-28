@@ -1,5 +1,7 @@
 #include "Ultrasonic.h"
 
+#define REACTION 60
+
 uint32_t ultrasonicSensorRisingCaptureTime;
 uint32_t ultrasonicSensorFallingCaptureTime;
 
@@ -115,14 +117,20 @@ void TIMER3_IRQHandler() {
 		ultrasonicAvailable = 1;
 		ultrasonicSensorDistance = (170 * (TIMER3->CR1 - ultrasonicSensorRisingCaptureTime)) ;
 		
-		// AUTO MODE
-		if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 15000){
-			SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE + 10);
+		if(race_start){
+			
+			if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 30000)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE + REACTION);
+			
+			else if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 20000)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE + REACTION/2);
+			
+			if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - 30000)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE + REACTION, AUTO_DUTY_CYCLE);
+			
+			else if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - 20000)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE + REACTION/2, AUTO_DUTY_CYCLE);
 		}
-		if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - 15000){
-			SET_MOTOR_POWER(AUTO_DUTY_CYCLE + 10, AUTO_DUTY_CYCLE);
-		}
-		
 					
 		LPC_TIM3->CCR = (1 << 3) | (1 << 5);
 		ultrasonicSensorCaptureRisingEdge = 1;
