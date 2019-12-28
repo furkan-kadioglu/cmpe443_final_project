@@ -64,6 +64,6 @@ void ADC_IRQHandler() {
 
 }
 
-uint32_t Calc_LDR_Light_Level(uint32_t LDR_Last){
+uint32_t Get_LDR_Light_Level(uint32_t LDR_Last){
 	return 1024 - (LDR_Last * 1024 / 0xFFF);
 }

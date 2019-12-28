@@ -20,9 +20,9 @@ typedef struct
 #define EXT	((EXT_TypeDef*) EXT_ADDRESS)
 
 #define ENCODER_PIN 6
+#define NECESSARY_NUMBER_OF_TURN 6
 static uint32_t NUMBER_OF_MOTOR_TURN = 0;
-static uint32_t TURN_MICROSECOND = 0;
-static uint32_t START_TC = 0;
+
 
 void External_Init(void);
 
