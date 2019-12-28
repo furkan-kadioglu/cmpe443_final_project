@@ -114,16 +114,15 @@ void TIMER3_IRQHandler() {
 	else {
 		ultrasonicAvailable = 1;
 		ultrasonicSensorDistance = (170 * (TIMER3->CR1 - ultrasonicSensorRisingCaptureTime)) ;
-		/*
+		
+		// AUTO MODE
 		if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 15000){
-			LEFT(5); // Mater has already moved forward, maybe this call will be optimized.
-			FORWARD();
+			SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE + 10);
 		}
 		if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - 15000){
-			RIGHT(5);
-			FORWARD();
+			SET_MOTOR_POWER(AUTO_DUTY_CYCLE + 10, AUTO_DUTY_CYCLE);
 		}
-		*/
+		
 					
 		LPC_TIM3->CCR = (1 << 3) | (1 << 5);
 		ultrasonicSensorCaptureRisingEdge = 1;
