@@ -155,7 +155,7 @@ void update() {
 			ultrasonicSensorDistance2 = 0.9 * previousDistance2 + 0.1 * ultrasonicSensorDistance2;
 			
 			if(ultrasonicSensorDistance2 > 1000000)
-				cosTheta = 1;
+				cosTheta = 0;
 			else
 				cosTheta = ultrasonicSensorDistance / pow(pow(ultrasonicSensorDistance,2) + pow(ultrasonicSensorDistance2,2), 0.5);
 			
