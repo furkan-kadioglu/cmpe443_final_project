@@ -42,11 +42,14 @@ void update() {
 			}
 
 			if(!strcmp(serialBuffer, "STOP\r\n")){
-				Request("STOP\r\n");
 				
-				ACTION = STOP_ACTION;
-				if(!photon_detected)
-					STOP();
+				if(!((ACTION == RIGHT_ACTION || ACTION == LEFT_ACTION) && MOTOR_ON)){
+					Request("STOP\r\n");
+				
+					ACTION = STOP_ACTION;
+					if(!photon_detected)
+						STOP();
+				}	
 			}
 
 			if(!strcmp(serialBuffer, "RIGHT\r\n")){
@@ -100,50 +103,51 @@ void update() {
 				previousDistance = ultrasonicSensorDistance;
 			ultrasonicSensorDistance = 0.9 * previousDistance + 0.1 * ultrasonicSensorDistance;
 			
-			/* DISCRETE // 1-sensor // Constant specfied range // OPTION --1--
-			if(ultrasonicSensorDistance < SPECIFIED_DISTANCE + level2)
+			/* DISCRETE // 1-sensor // Constant specfied range // OPTION --1--	
+			if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + level2)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION, AUTO_DUTY_CYCLE);
 			
-			else if(ultrasonicSensorDistance < SPECIFIED_DISTANCE + level1)
+			else if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + level1)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION/2, AUTO_DUTY_CYCLE);
 			
-			if(ultrasonicSensorDistance > SPECIFIED_DISTANCE - level2)
+			if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - level2)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION);
 			
-			else if(ultrasonicSensorDistance > SPECIFIED_DISTANCE - level1)
+			else if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - level1)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION/2);
-			
 			*/
+		
 			
 			/* DISCRETE // 1-sensor // Dynamic specfied range // OPTION --2--  
-			if(ultrasonicSensorDistance < previousDistance + level2)
+			if(ultrasonicSensorDistance > previousDistance + level2)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION, AUTO_DUTY_CYCLE);
 			
-			else if(ultrasonicSensorDistance < previousDistance + level1)
+			else if(ultrasonicSensorDistance > previousDistance + level1)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION/2, AUTO_DUTY_CYCLE);
 			
-			if(ultrasonicSensorDistance > previousDistance - level2)
+			if(ultrasonicSensorDistance < previousDistance - level2)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION);
 			
-			else if(ultrasonicSensorDistance > previousDistance - level1)
+			else if(ultrasonicSensorDistance < previousDistance - level1)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION/2);
 			*/
 			
-			/* CONTINOUS // 1-sensor // Constant specfied range // OPTION --3-- 
+			/* CONTINOUS // 1-sensor // Constant specfied range // OPTION --3--
 			float cosTheta = (SPECIFIED_DISTANCE - ultrasonicSensorDistance) / 10.0;
-			if(cosTheta < 0)
+			if(cosTheta > 0)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE * (1 - cosTheta));
 			else
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE * (1 + cosTheta), AUTO_DUTY_CYCLE);
 			*/
 			 
-			/* CONTINOUS // 1-sensor // Dynamic specfied range // OPTION --4-- 
+			/* CONTINOUS // 1-sensor // Dynamic specfied range // OPTION --4-- */
 			float cosTheta = (previousDistance - ultrasonicSensorDistance) / 10.0;
-			if(cosTheta < 0)
+			if(cosTheta > 0)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE * (1 - cosTheta));
 			else
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE * (1 + cosTheta), AUTO_DUTY_CYCLE);
-			 */
+			
+			 
 			 
 			/* CONTINOUS // 2-sensor  // OPTION --5-- 
 			if(!previousDistance2)
@@ -217,8 +221,6 @@ void update() {
 			
 		}
 	}
-
-
 }
 
 int main() {

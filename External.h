@@ -20,7 +20,7 @@ typedef struct
 #define EXT	((EXT_TypeDef*) EXT_ADDRESS)
 
 #define ENCODER_PIN 6
-#define NECESSARY_NUMBER_OF_TURN 2
+#define NECESSARY_NUMBER_OF_TURN 1
 static uint32_t NUMBER_OF_MOTOR_TURN = 0;
 
 
