@@ -4,10 +4,14 @@
 #include "Timer.h"
 #include "Command.h"
 #include <math.h>
-#define MIN(a,b) (((a)<(b))?(a):(b))
-#define MAX(a,b) (((a)>(b))?(a):(b))
 
-#define degree 3.14159265/180 
+// Autonomus variables
+#define REACTION 30
+extern uint32_t previousDistance;
+extern uint32_t level1; // discrete
+extern uint32_t level2; // discrete
+extern uint32_t distance2; // continous 2-sensor
+
 
 //Write IOCON Register Address of Trigger Pin.
 #define IOCON_TRIGGER_ADDRESS	0x4002C024
