@@ -462,11 +462,6 @@
               <FileType>1</FileType>
               <FilePath>.\MotorSpeedSensor.c</FilePath>
             </File>
-            <File>
-              <FileName>MotorSpeedSensor.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\MotorSpeedSensor.h</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>

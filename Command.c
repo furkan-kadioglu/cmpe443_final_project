@@ -108,7 +108,7 @@ void LEFT(){
 
 void START(void){
 	race_start = 1;
-	FORWARD(); // Optimize it!! for race
+	FORWARD();
 	
 }
 

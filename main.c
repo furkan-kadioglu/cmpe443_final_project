@@ -153,8 +153,13 @@ void update() {
 			if(!previousDistance2)
 				previousDistance2 = ultrasonicSensorDistance2;
 			ultrasonicSensorDistance2 = 0.9 * previousDistance2 + 0.1 * ultrasonicSensorDistance2;
-			float cosTheta = ultrasonicSensorDistance / pow(pow(ultrasonicSensorDistance,2) + pow(ultrasonicSensorDistance2,2), 0.5);
-			if(cosTheta < 0)
+			
+			if(ultrasonicSensorDistance2 > 1000000)
+				cosTheta = 1;
+			else
+				cosTheta = ultrasonicSensorDistance / pow(pow(ultrasonicSensorDistance,2) + pow(ultrasonicSensorDistance2,2), 0.5);
+			
+			if(cosTheta > 0)
 				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT * (1 - cosTheta));
 			else
 				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT * (1 + cosTheta), MOTOR_POWER_IN_PERCENT);

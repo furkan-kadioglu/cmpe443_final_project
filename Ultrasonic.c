@@ -18,6 +18,7 @@ uint32_t previousDistance2 = 0;
 uint32_t ultrasonicSensorRisingCaptureTime2 = 0;
 uint8_t ultrasonicSensorCaptureRisingEdge2 = 0;
 uint8_t ultrasonicAvailable2 = 0;
+float cosTheta = 0;
  
 
 void Ultrasonic_Init() {

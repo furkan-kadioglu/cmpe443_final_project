@@ -12,6 +12,7 @@ extern uint32_t level1; // discrete
 extern uint32_t level2; // discrete
 extern uint32_t ultrasonicSensorDistance2; // continous 2-sensor
 extern uint32_t previousDistance2;
+extern float cosTheta;
 
 
 //Write IOCON Register Address of Trigger Pin.
