@@ -105,48 +105,48 @@ void update() {
 			
 			/* DISCRETE // 1-sensor // Constant specfied range // OPTION --1--	
 			if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + level2)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION, AUTO_DUTY_CYCLE);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT - REACTION, MOTOR_POWER_IN_PERCENT);
 			
 			else if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + level1)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION/2, AUTO_DUTY_CYCLE);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT - REACTION/2, MOTOR_POWER_IN_PERCENT);
 			
 			if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - level2)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT - REACTION);
 			
 			else if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - level1)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION/2);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT - REACTION/2);
 			*/
 		
 			
 			/* DISCRETE // 1-sensor // Dynamic specfied range // OPTION --2--  
 			if(ultrasonicSensorDistance > previousDistance + level2)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION, AUTO_DUTY_CYCLE);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT - REACTION, MOTOR_POWER_IN_PERCENT);
 			
 			else if(ultrasonicSensorDistance > previousDistance + level1)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION/2, AUTO_DUTY_CYCLE);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT - REACTION/2, MOTOR_POWER_IN_PERCENT);
 			
 			if(ultrasonicSensorDistance < previousDistance - level2)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT - REACTION);
 			
 			else if(ultrasonicSensorDistance < previousDistance - level1)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION/2);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT - REACTION/2);
 			*/
 			
 			/* CONTINOUS // 1-sensor // Constant specfied range // OPTION --3--
 			float cosTheta = (SPECIFIED_DISTANCE - ultrasonicSensorDistance) / 10.0;
 			if(cosTheta > 0)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE * (1 - cosTheta));
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT * (1 - cosTheta));
 			else
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE * (1 + cosTheta), AUTO_DUTY_CYCLE);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT * (1 + cosTheta), MOTOR_POWER_IN_PERCENT);
 			*/
 			 
-			/* CONTINOUS // 1-sensor // Dynamic specfied range // OPTION --4-- */
+			/* CONTINOUS // 1-sensor // Dynamic specfied range // OPTION --4-- 
 			float cosTheta = (previousDistance - ultrasonicSensorDistance) / 10.0;
 			if(cosTheta > 0)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE * (1 - cosTheta));
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT * (1 - cosTheta));
 			else
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE * (1 + cosTheta), AUTO_DUTY_CYCLE);
-			
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT * (1 + cosTheta), MOTOR_POWER_IN_PERCENT);
+			*/
 			 
 			 
 			/* CONTINOUS // 2-sensor  // OPTION --5-- 
@@ -155,9 +155,9 @@ void update() {
 			ultrasonicSensorDistance2 = 0.9 * previousDistance2 + 0.1 * ultrasonicSensorDistance2;
 			float cosTheta = ultrasonicSensorDistance / pow(pow(ultrasonicSensorDistance,2) + pow(ultrasonicSensorDistance2,2), 0.5);
 			if(cosTheta < 0)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE * (1 - cosTheta));
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT * (1 - cosTheta));
 			else
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE * (1 + cosTheta), AUTO_DUTY_CYCLE);
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT * (1 + cosTheta), MOTOR_POWER_IN_PERCENT);
 			previousDistance2 = ultrasonicSensorDistance2;
 			*/ 
 			 
@@ -170,13 +170,11 @@ void update() {
 		ADC_Available = 0;
 		
 		// Potentiometer - Motor Speed
-		if(MODE == TEST){
-			
-			MOTOR_POWER_IN_PERCENT = (Potentiometer_Last*100) / 0xFFF;
-			
-			if(MOTOR_ON)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);		
-		}
+		MOTOR_POWER_IN_PERCENT = (Potentiometer_Last*100) / 0xFFF;
+		
+		if(MOTOR_ON)
+			SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);		
+		
 
 		// LDR - Start/Stop
 		LDR1_Last_Light_Level = Get_LDR_Light_Level(LDR1_Last);
