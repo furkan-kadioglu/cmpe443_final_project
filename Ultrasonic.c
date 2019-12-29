@@ -107,7 +107,7 @@ void TIMER2_IRQHandler() {
 		if(ultrasonicSensorCaptureRisingEdge2) {
 			ultrasonicSensorRisingCaptureTime2 = TIMER2->CR0;
 			
-			LPC_TIM3->CCR = (1 << 1) | (1 << 2);
+			LPC_TIM2->CCR = (1 << 1) | (1 << 2);
 			ultrasonicSensorCaptureRisingEdge2 = 0;
 		}
 		else {
