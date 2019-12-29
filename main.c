@@ -1,5 +1,5 @@
 #include "TEST.h"
-#define light_threshold 450
+#define light_threshold 350
 
 void init() {
 	MOTOR_Init();
@@ -7,7 +7,7 @@ void init() {
 	Signal_Init();
 	ADC_Init();
 	ADC_Start();
-	External_Init();
+	Motor_Speed_Sensor_Init();
 
 	Serial_Init();
 	HM10_Init();

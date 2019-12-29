@@ -13,7 +13,7 @@ void Clear_Action(){
 	NUMBER_OF_TURN = 0;
 	
 	// Turn off interrupt
-	NVIC_DisableIRQ(EINT0_IRQn);
+	NVIC_DisableIRQ(PWM0_IRQn);
 	
 	// Turn off signals
 	BACK_SIGNAL_PORT->CLR |= BACK_SIGNAL_MASK;
@@ -67,8 +67,8 @@ void STOP(){
 void RIGHT(){
 	
 	// Set Interrupt for 90 degrees
-	NVIC_EnableIRQ(EINT0_IRQn);
-	NVIC_ClearPendingIRQ(EINT0_IRQn);
+	NVIC_EnableIRQ(PWM0_IRQn);
+	NVIC_ClearPendingIRQ(PWM0_IRQn);
 
 	// Set Motor
 	MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
@@ -89,8 +89,8 @@ void RIGHT(){
 void LEFT(){
 	
 	// Set Interrupt for 90 degrees
-	NVIC_EnableIRQ(EINT0_IRQn);
-	NVIC_ClearPendingIRQ(EINT0_IRQn);
+	NVIC_EnableIRQ(PWM0_IRQn);
+	NVIC_ClearPendingIRQ(PWM0_IRQn);
 
 	// Set Motor
 	MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
@@ -109,7 +109,6 @@ void LEFT(){
 void START(void){
 	race_start = 1;
 	FORWARD(); // Optimize it!! for race
-	SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE);
 	
 }
 

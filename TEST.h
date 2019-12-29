@@ -3,7 +3,7 @@
 #include "Ultrasonic.h"
 #include "Led.h"
 #include "ADC.h"
-#include "External.h"
+#include "MotorSpeedSensor.h"
 #include "HM10.h"
 
 void Ultrasonic_Test(void);
