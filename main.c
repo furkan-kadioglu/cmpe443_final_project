@@ -146,12 +146,16 @@ void update() {
 			 */
 			 
 			/* CONTINOUS // 2-sensor  // OPTION --5-- 
-			float cosTheta = ultrasonicSensorDistance / pow(pow(ultrasonicSensorDistance,2) + pow(distance2,2), 0.5);
+			if(!previousDistance2)
+				previousDistance2 = ultrasonicSensorDistance2;
+			ultrasonicSensorDistance2 = 0.9 * previousDistance2 + 0.1 * ultrasonicSensorDistance2;
+			float cosTheta = ultrasonicSensorDistance / pow(pow(ultrasonicSensorDistance,2) + pow(ultrasonicSensorDistance2,2), 0.5);
 			if(cosTheta > 0)
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE * (1 - cosTheta));
 			else
 				SET_MOTOR_POWER(AUTO_DUTY_CYCLE * (1 + cosTheta), AUTO_DUTY_CYCLE);
-			 */
+			previousDistance2 = ultrasonicSensorDistance2;
+			*/ 
 			 
 			previousDistance = ultrasonicSensorDistance;
 		}

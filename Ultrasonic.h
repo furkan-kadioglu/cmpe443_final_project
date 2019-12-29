@@ -10,7 +10,8 @@
 extern uint32_t previousDistance;
 extern uint32_t level1; // discrete
 extern uint32_t level2; // discrete
-extern uint32_t distance2; // continous 2-sensor
+extern uint32_t ultrasonicSensorDistance2; // continous 2-sensor
+extern uint32_t previousDistance2;
 
 
 //Write IOCON Register Address of Trigger Pin.
@@ -20,6 +21,11 @@ extern uint32_t distance2; // continous 2-sensor
 //Write IOCON Register Address of Echo Pin.
 #define IOCON_ECHO_ADDRESS	0x4002C060
 #define IOCON_ECHO	*((volatile uint32_t*)(IOCON_ECHO_ADDRESS))
+	
+//Write IOCON Register Address of Echo Pin.
+#define IOCON_ECHO_ADDRESS2	0x4002C010
+#define IOCON_ECHO2	*((volatile uint32_t*)(IOCON_ECHO_ADDRESS2))
+
 
 extern uint32_t ultrasonicSensorRisingCaptureTime;
 extern uint32_t ultrasonicSensorFallingCaptureTime;
