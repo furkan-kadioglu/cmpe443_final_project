@@ -1,15 +1,21 @@
 #include "Ultrasonic.h"
 
-#define REACTION 60
+#define REACTION 30
 
 uint32_t ultrasonicSensorRisingCaptureTime;
 uint32_t ultrasonicSensorFallingCaptureTime;
 
 uint32_t ultrasonicSensorDistance = 0;
+uint32_t previousDistance = 0;
+uint32_t distance2 = 0;
 
 uint8_t ultrasonicSensorTriggerStart = 0;
 uint8_t ultrasonicSensorCaptureRisingEdge = 0;
 uint8_t  ultrasonicAvailable = 0;
+
+
+uint32_t level1 = 20000;
+uint32_t level2 = 30000;
 
 void Ultrasonic_Init() {
 	IOCON_TRIGGER |= 0x03;
@@ -117,19 +123,69 @@ void TIMER3_IRQHandler() {
 		ultrasonicAvailable = 1;
 		ultrasonicSensorDistance = (170 * (TIMER3->CR1 - ultrasonicSensorRisingCaptureTime)) ;
 		
+		
+		
 		if(race_start){
 			
-			if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 30000)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE + REACTION);
+			// Noise Elimination - Exponential Weighted Average
+			if(!previousDistance)
+				previousDistance = ultrasonicSensorDistance;
+			ultrasonicSensorDistance = 0.9 * previousDistance + 0.1 * ultrasonicSensorDistance;
 			
-			else if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 20000)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE + REACTION/2);
+			/* DISCRETE // 1-sensor // Constant specfied range // OPTION --1--
+			if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + level2)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION, AUTO_DUTY_CYCLE);
 			
-			if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - 30000)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE + REACTION, AUTO_DUTY_CYCLE);
+			else if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + level1)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION/2, AUTO_DUTY_CYCLE);
 			
-			else if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - 20000)
-				SET_MOTOR_POWER(AUTO_DUTY_CYCLE + REACTION/2, AUTO_DUTY_CYCLE);
+			if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - level2)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION);
+			
+			else if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - level1)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION/2);
+			
+			*/
+			
+			/* DISCRETE // 1-sensor // Dynamic specfied range // OPTION --2--  
+			if(ultrasonicSensorDistance > previousDistance + level2)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION, AUTO_DUTY_CYCLE);
+			
+			else if(ultrasonicSensorDistance > previousDistance + level1)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE - REACTION/2, AUTO_DUTY_CYCLE);
+			
+			if(ultrasonicSensorDistance < previousDistance - level2)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION);
+			
+			else if(ultrasonicSensorDistance < previousDistance - level1)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE - REACTION/2);
+			*/
+			
+			/* CONTINOUS // 1-sensor // Constant specfied range // OPTION --3-- 
+			float cosTheta = (SPECIFIED_DISTANCE - ultrasonicSensorDistance) / 10.0;
+			if(cosTheta > 0)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE * (1 - cosTheta));
+			else
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE * (1 + cosTheta), AUTO_DUTY_CYCLE);
+			*/
+			 
+			/* CONTINOUS // 1-sensor // Dynamic specfied range // OPTION --4-- 
+			float cosTheta = (previousDistance - ultrasonicSensorDistance) / 10.0;
+			if(cosTheta > 0)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE * (1 - cosTheta));
+			else
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE * (1 + cosTheta), AUTO_DUTY_CYCLE);
+			 */
+			 
+			/* CONTINOUS // 2-sensor  // OPTION --5-- 
+			float cosTheta = ultrasonicSensorDistance / pow(pow(ultrasonicSensorDistance,2) + pow(distance2,2), 0.5);
+			if(cosTheta > 0)
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE, AUTO_DUTY_CYCLE * (1 - cosTheta));
+			else
+				SET_MOTOR_POWER(AUTO_DUTY_CYCLE * (1 + cosTheta), AUTO_DUTY_CYCLE);
+			 */
+			 
+			previousDistance = ultrasonicSensorDistance;
 		}
 					
 		LPC_TIM3->CCR = (1 << 3) | (1 << 5);

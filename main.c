@@ -1,8 +1,7 @@
 #include "TEST.h"
-
+#define light_threshold 450
 
 void init() {
-	
 	MOTOR_Init();
 	TIMER_Init();
 	Signal_Init();
@@ -111,7 +110,7 @@ void update() {
 		
 		if(MODE == TEST){
 			
-			if(LDR1_Last_Light_Level > 500 || LDR2_Last_Light_Level > 500){
+			if(LDR1_Last_Light_Level > light_threshold || LDR2_Last_Light_Level > light_threshold){
 				
 				MOTOR_ON = 0;
 				SET_MOTOR_POWER(0, 0);
@@ -139,7 +138,7 @@ void update() {
 		
 		else{
 			if(race_start){		
-				if(LDR1_Last_Light_Level > 500 || LDR2_Last_Light_Level > 500){
+				if(LDR1_Last_Light_Level > light_threshold || LDR2_Last_Light_Level > light_threshold){
 					race_start = 0;
 					STOP();
 					FINISH();
