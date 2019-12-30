@@ -1,6 +1,9 @@
 #include "MOTOR.h"
 #include "GPIO.h"
 
+uint32_t MOTOR_POWER_IN_PERCENT = 50;
+uint8_t MOTOR_ON = 0;
+
 void MOTOR_Init() {
 	//Change the function of the pin in here:
 	IOCON_RIGHT_MOTORS &= ~4;
@@ -27,7 +30,7 @@ void MOTOR_Init() {
 	
 	PWM_MOTOR->TCR = (1 << 0 | 1 << 3);
 	
-	SET_MOTOR_POWER(MAX_MOTOR_DUTY_CYCLE * MOTOR_POWER_IN_PERCENT, MAX_MOTOR_DUTY_CYCLE * MOTOR_POWER_IN_PERCENT);
+	SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
 	
 	MOTOR_DRIVER_IN1_PORT->DIR |= MOTOR_DRIVER_IN1_MASK;
 	MOTOR_DRIVER_IN2_PORT->DIR |= MOTOR_DRIVER_IN2_MASK;
@@ -51,8 +54,8 @@ void SET_MOTOR_POWER(uint32_t left, uint32_t right){
 	}
 	
 	//Write a formula to calculate the match register of the PWM pin.
-	PWM_MOTOR->MR6 = PWM_MOTOR->MR0 / 100 * right;
-	PWM_MOTOR->MR5 = PWM_MOTOR->MR0 / 100 * left;
+	PWM_MOTOR->MR6 = PWM_MOTOR->MR0  * right * MAX_MOTOR_DUTY_CYCLE / 10000;
+	PWM_MOTOR->MR5 = PWM_MOTOR->MR0  * left  * MAX_MOTOR_DUTY_CYCLE  /10000;
 	
 	//Enable PWM Match Register Latch.
 	PWM_MOTOR->LER |= (3 << 5);

@@ -1,12 +1,24 @@
 #include "LPC407x_8x_177x_8x.h"
 
 #include "MOTOR.h"
-#include "Signal.h"
 #include "HM10.h"
-
+#include "ADC.h"
 
 enum MODES {TEST, AUTO};
-static uint32_t MODE = TEST;
+extern uint32_t MODE;
+static inline char *stringFromMode(uint32_t mode)
+{
+    static char *strings[] = { "TEST", "AUTO"};
+    return strings[mode];
+}
+
+enum LAST_ACTIONS {STOP_ACTION, FORWARD_ACTION, BACK_ACTION, LEFT_ACTION, RIGHT_ACTION};
+extern uint32_t ACTION;
+
+extern uint8_t photon_detected;
+extern uint8_t race_start;
+extern uint32_t NUMBER_OF_TURN;
+extern uint32_t ultrasonicSensorDistance;
 
 void AUTONOMOUS (void);
 void TESTING (void);
@@ -14,10 +26,9 @@ void TESTING (void);
 void FORWARD (void);
 void BACK (void);
 void STOP (void);
-void RIGHT (uint32_t DEGREE);
-void LEFT (uint32_t DEGREE);
-
+void RIGHT (void);
+void LEFT (void);
 
 void STATUS (void);
+void START (void);
 void FINISH (void);
-
