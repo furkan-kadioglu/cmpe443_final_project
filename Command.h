@@ -3,6 +3,8 @@
 #include "MOTOR.h"
 #include "HM10.h"
 #include "ADC.h"
+#include "Ultrasonic.h"
+#include "MotorSpeedSensor.h"
 
 enum MODES {TEST, AUTO};
 extern uint32_t MODE;
@@ -14,11 +16,6 @@ static inline char *stringFromMode(uint32_t mode)
 
 enum LAST_ACTIONS {STOP_ACTION, FORWARD_ACTION, BACK_ACTION, LEFT_ACTION, RIGHT_ACTION};
 extern uint32_t ACTION;
-
-extern uint8_t photon_detected;
-extern uint8_t race_start;
-extern uint32_t NUMBER_OF_TURN;
-extern uint32_t ultrasonicSensorDistance;
 
 void AUTONOMOUS (void);
 void TESTING (void);

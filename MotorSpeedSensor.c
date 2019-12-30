@@ -1,6 +1,8 @@
 #include "MotorSpeedSensor.h"
 #include "Command.h"
 
+uint32_t NUMBER_OF_TURN = 0;
+
 void Motor_Speed_Sensor_Init(void){
 	IOCON_CAPTURE |= 0x3;
 	

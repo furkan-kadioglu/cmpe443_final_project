@@ -2,17 +2,15 @@
 #define ULTRASONIC_H
 
 #include "Timer.h"
-#include "Command.h"
 #include <math.h>
 
 // Autonomus variables
-#define REACTION 30
+#define REACTION(x) (x*x)
+
+
 extern uint32_t previousDistance;
-extern uint32_t level1; // discrete
-extern uint32_t level2; // discrete
 extern uint32_t ultrasonicSensorDistance2; // continous 2-sensor
 extern uint32_t previousDistance2;
-extern float cosTheta;
 
 
 //Write IOCON Register Address of Trigger Pin.
@@ -27,11 +25,12 @@ extern float cosTheta;
 #define IOCON_ECHO_ADDRESS2	0x4002C010
 #define IOCON_ECHO2	*((volatile uint32_t*)(IOCON_ECHO_ADDRESS2))
 
+#define SPECIFIED_DISTANCE 250000
+extern uint8_t race_start;
 
 extern uint32_t ultrasonicSensorRisingCaptureTime;
 extern uint32_t ultrasonicSensorFallingCaptureTime;
 extern uint32_t ultrasonicSensorDistance;
-#define SPECIFIED_DISTANCE 250000
 
 extern uint8_t ultrasonicSensorTriggerStart;
 extern uint8_t ultrasonicSensorCaptureRisingEdge;

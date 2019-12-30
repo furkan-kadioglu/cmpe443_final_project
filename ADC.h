@@ -46,4 +46,7 @@ uint32_t Get_LDR_Light_Level(uint32_t LDR_Last);
 extern uint32_t LDR1_Last_Light_Level;
 extern uint32_t LDR2_Last_Light_Level;
 
+#define light_threshold 350
+extern uint8_t photon_detected;
+
 #endif

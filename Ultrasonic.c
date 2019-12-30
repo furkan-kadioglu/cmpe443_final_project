@@ -7,10 +7,8 @@ uint8_t ultrasonicSensorCaptureRisingEdge = 0;
 uint8_t  ultrasonicAvailable = 0;
 
 uint8_t ultrasonicSensorTriggerStart = 0;
+uint8_t race_start = 0;
 
-
-uint32_t level1 = 20000; // discrete
-uint32_t level2 = 30000; // discrete
 
 // continous 2-sensor
 uint32_t ultrasonicSensorDistance2 = 0; 
@@ -18,7 +16,7 @@ uint32_t previousDistance2 = 0;
 uint32_t ultrasonicSensorRisingCaptureTime2 = 0;
 uint8_t ultrasonicSensorCaptureRisingEdge2 = 0;
 uint8_t ultrasonicAvailable2 = 0;
-float cosTheta = 0;
+
  
 
 void Ultrasonic_Init() {

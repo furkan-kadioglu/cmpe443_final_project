@@ -1,6 +1,6 @@
 #include "LPC407x_8x_177x_8x.h"
 #include "Joystick.h"
-#include "Ultrasonic.h"
+#include "Command.h"
 #include "Led.h"
 #include "ADC.h"
 #include "MotorSpeedSensor.h"

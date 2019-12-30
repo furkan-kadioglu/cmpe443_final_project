@@ -8,6 +8,8 @@ uint8_t ADC_Available = 0;
 uint32_t LDR1_Last_Light_Level = 0;
 uint32_t LDR2_Last_Light_Level = 0;
 
+uint8_t photon_detected = 0;
+
 void ADC_Init() {
 	
 	// IOCON

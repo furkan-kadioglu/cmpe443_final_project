@@ -1,5 +1,5 @@
 #include "TEST.h"
-#define light_threshold 350
+
 
 void init() {
 	MOTOR_Init();
@@ -42,14 +42,13 @@ void update() {
 			}
 
 			if(!strcmp(serialBuffer, "STOP\r\n")){
+			
+				Request("STOP\r\n");
+			
+				ACTION = STOP_ACTION;
+				if(!photon_detected)
+					STOP();
 				
-				if(!((ACTION == RIGHT_ACTION || ACTION == LEFT_ACTION) && MOTOR_ON)){
-					Request("STOP\r\n");
-				
-					ACTION = STOP_ACTION;
-					if(!photon_detected)
-						STOP();
-				}	
 			}
 
 			if(!strcmp(serialBuffer, "RIGHT\r\n")){
@@ -73,6 +72,7 @@ void update() {
 			if(!strcmp(serialBuffer, "AUTO\r\n")){
 				Request("AUTO\r\nAUTONOMOUS\r\n");
 				AUTONOMOUS();
+				Ultrasonic_Start_Trigger_Timer();
 			}
 
 			if(!strcmp(serialBuffer, "TEST\r\n")){
@@ -87,7 +87,6 @@ void update() {
 			if(!strcmp(serialBuffer, "START\r\n") && MODE == AUTO){
 				Request("START\r\n");
 				START();
-				Ultrasonic_Start_Trigger_Timer();
 			}
 
 			Clear_serialBuffer();
@@ -99,74 +98,36 @@ void update() {
 			ultrasonicAvailable = 0;
 			
 			// Noise Elimination - Exponential Weighted Average
+			/*
 			if(!previousDistance)
 				previousDistance = ultrasonicSensorDistance;
 			ultrasonicSensorDistance = 0.9 * previousDistance + 0.1 * ultrasonicSensorDistance;
-			
-			/* DISCRETE // 1-sensor // Constant specfied range // OPTION --1--	
-			if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + level2)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT - REACTION, MOTOR_POWER_IN_PERCENT);
-			
-			else if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + level1)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT - REACTION/2, MOTOR_POWER_IN_PERCENT);
-			
-			if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - level2)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT - REACTION);
-			
-			else if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - level1)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT - REACTION/2);
-			*/
-		
-			
-			/* DISCRETE // 1-sensor // Dynamic specfied range // OPTION --2--  
-			if(ultrasonicSensorDistance > previousDistance + level2)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT - REACTION, MOTOR_POWER_IN_PERCENT);
-			
-			else if(ultrasonicSensorDistance > previousDistance + level1)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT - REACTION/2, MOTOR_POWER_IN_PERCENT);
-			
-			if(ultrasonicSensorDistance < previousDistance - level2)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT - REACTION);
-			
-			else if(ultrasonicSensorDistance < previousDistance - level1)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT - REACTION/2);
-			*/
-			
-			/* CONTINOUS // 1-sensor // Constant specfied range // OPTION --3--
-			float cosTheta = (SPECIFIED_DISTANCE - ultrasonicSensorDistance) / 10.0;
-			if(cosTheta > 0)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT * (1 - cosTheta));
-			else
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT * (1 + cosTheta), MOTOR_POWER_IN_PERCENT);
 			*/
 			 
-			/* CONTINOUS // 1-sensor // Dynamic specfied range // OPTION --4-- 
-			float cosTheta = (previousDistance - ultrasonicSensorDistance) / 10.0;
-			if(cosTheta > 0)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT * (1 - cosTheta));
+			/* CONTINOUS // 1-sensor  */
+			if(SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance )
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000));
 			else
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT * (1 + cosTheta), MOTOR_POWER_IN_PERCENT);
-			*/
-			 
-			 
-			/* CONTINOUS // 2-sensor  // OPTION --5-- 
-			if(!previousDistance2)
-				previousDistance2 = ultrasonicSensorDistance2;
-			ultrasonicSensorDistance2 = 0.9 * previousDistance2 + 0.1 * ultrasonicSensorDistance2;
+				SET_MOTOR_POWER(REACTION((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000), MOTOR_POWER_IN_PERCENT);
 			
-			if(ultrasonicSensorDistance2 > 1000000)
-				cosTheta = 0;
-			else
+			 
+			 
+			/* CONTINOUS // 2-sensor 
+			//if(!previousDistance2)
+			//	previousDistance2 = ultrasonicSensorDistance2;
+			//ultrasonicSensorDistance2 = 0.9 * previousDistance2 + 0.1 * ultrasonicSensorDistance2;
+			
+			if(ultrasonicSensorDistance2 < 1000000){
 				cosTheta = ultrasonicSensorDistance / pow(pow(ultrasonicSensorDistance,2) + pow(ultrasonicSensorDistance2,2), 0.5);
-			
-			if(cosTheta > 0)
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT * (1 - cosTheta));
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, (40 / (90.001 - (acos(cosTheta)*180/PI))));
+			}
 			else
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT * (1 + cosTheta), MOTOR_POWER_IN_PERCENT);
+				SET_MOTOR_POWER(REACTION(50 - (ultrasonicSensorDistance/10000)), MOTOR_POWER_IN_PERCENT);
+		
 			previousDistance2 = ultrasonicSensorDistance2;
-			*/ 
-			 
 			previousDistance = ultrasonicSensorDistance;
+			*/ 
+			
 		}
 	}
 

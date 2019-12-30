@@ -1,7 +1,7 @@
 #include "MOTOR.h"
 #include "GPIO.h"
 
-uint32_t MOTOR_POWER_IN_PERCENT = 50;
+uint32_t MOTOR_POWER_IN_PERCENT = 0;
 uint8_t MOTOR_ON = 0;
 
 void MOTOR_Init() {
@@ -37,20 +37,29 @@ void MOTOR_Init() {
 	MOTOR_DRIVER_IN3_PORT->DIR |= MOTOR_DRIVER_IN3_MASK;
 	MOTOR_DRIVER_IN4_PORT->DIR |= MOTOR_DRIVER_IN4_MASK;
 	
+	/*
 	MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
 	MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
 	MOTOR_DRIVER_IN3_PORT->SET |= MOTOR_DRIVER_IN3_MASK;
 	MOTOR_DRIVER_IN4_PORT->SET |= MOTOR_DRIVER_IN4_MASK;
+	*/
 	
 }
 
 
-void SET_MOTOR_POWER(uint32_t left, uint32_t right){
+void SET_MOTOR_POWER(int32_t left, int32_t right){
 	if(left > 100) {
 		left = 100;
 	}
 	if(right > 100) {
 		right = 100;
+	}
+	
+	if(left < 0) {
+		left = 0;
+	}
+	if(right < 0) {
+		right = 0;
 	}
 	
 	//Write a formula to calculate the match register of the PWM pin.

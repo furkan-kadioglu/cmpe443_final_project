@@ -1,16 +1,13 @@
 #include "Command.h"
 
-uint32_t NUMBER_OF_TURN = 0;
 uint32_t MODE = TEST;
-uint32_t ACTION = STOP_ACTION;
-
-uint8_t photon_detected = 0;
-uint8_t race_start = 0; 
+uint32_t ACTION = STOP_ACTION; 
 
 void Clear_Action(){
 	// Reset 
 	MOTOR_ON = 0;
 	NUMBER_OF_TURN = 0;
+	race_start = 0;
 	
 	// Turn off interrupt
 	NVIC_DisableIRQ(PWM0_IRQn);
@@ -107,9 +104,8 @@ void LEFT(){
 }
 
 void START(void){
-	race_start = 1;
 	FORWARD();
-	
+	race_start = 1;
 }
 
 void AUTONOMOUS (void){
@@ -121,9 +117,20 @@ void TESTING (void){
 
 void STATUS (void) {
 	sprintf(serialBuffer,
-	"STATUS\r\n{\"distance\":%d,\"light_level_left\":%d,\"light_level_right\":%d,\"op_mode\":\"%s\"}\r\n",
-	ultrasonicSensorDistance/1000, LDR1_Last_Light_Level, LDR2_Last_Light_Level, stringFromMode(MODE));
+	"STATUS\r\n\
+	{\"distance\":%d,\
+	\"light_level_left\":%d,\
+	\"light_level_right\":%d,\
+	\"op_mode\":\"%s\",\
+	\"pot_level\":%d}\r\n",
+	ultrasonicSensorDistance/1000, 
+	LDR1_Last_Light_Level, 
+	LDR2_Last_Light_Level, 
+	stringFromMode(MODE),
+	MOTOR_POWER_IN_PERCENT);
+	
 	Response();
+
 }
 
 void FINISH(void){

@@ -27,4 +27,4 @@ extern uint8_t MOTOR_ON;
 
 
 void MOTOR_Init(void);
-void SET_MOTOR_POWER(uint32_t left, uint32_t right);
+void SET_MOTOR_POWER(int32_t left, int32_t right);
