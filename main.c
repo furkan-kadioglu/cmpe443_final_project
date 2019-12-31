@@ -1,5 +1,8 @@
 #include "TEST.h"
+#define DIVIDER 1.2
 
+enum AUTO_TURNING_MODES {R, L, S};
+uint8_t AUTO_TURNING_MODE = S;
 
 void init() {
 	MOTOR_Init();
@@ -86,6 +89,7 @@ void update() {
 			
 			if(!strcmp(serialBuffer, "START\r\n") && MODE == AUTO){
 				Request("START\r\n");
+				AUTO_TURNING_MODE = S;
 				START();
 			}
 
@@ -105,12 +109,46 @@ void update() {
 			*/
 			 
 			/* CONTINOUS // 1-sensor  */
-			if(SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance )
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000));
-			else
-				SET_MOTOR_POWER(REACTION((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000), MOTOR_POWER_IN_PERCENT);
 			
-			 
+			// Duvar devirmesin diye ikinci sensor 
+			if(ultrasonicSensorDistance2 < 250000)
+			{
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance2/10000));
+				AUTO_TURNING_MODE = R;
+			}
+			
+			// 24 --- 26
+			else if(SPECIFIED_DISTANCE-10000 < (int32_t)ultrasonicSensorDistance \
+				&& SPECIFIED_DISTANCE+10000 > (int32_t)ultrasonicSensorDistance)
+			{	
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
+				AUTO_TURNING_MODE = S;
+			}
+				
+			// 0 --- 24
+			else if(SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance )
+			{
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000));
+				AUTO_TURNING_MODE = R;
+			}
+			
+			// 26 --- 50
+			else if(2*SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance)
+			{	
+				SET_MOTOR_POWER(REACTION((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000), MOTOR_POWER_IN_PERCENT);
+				AUTO_TURNING_MODE = L;
+			}
+			
+			// Farazi mode  50+
+			else
+			{	
+					if(AUTO_TURNING_MODE == L)
+						SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT /4);
+					
+					else
+						SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT /4, MOTOR_POWER_IN_PERCENT);
+			}
+			
 			 
 			/* CONTINOUS // 2-sensor 
 			//if(!previousDistance2)
