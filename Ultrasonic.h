@@ -5,7 +5,39 @@
 #include <math.h>
 
 // Autonomus variables
-#define REACTION(x) (x*x)
+
+// F1
+//#define REACTION(x) (-1166.666667 +203.164141 * pow(x, 1) -11.754079 * pow(x, 2) +0.226301 * pow(x, 3) )
+
+// F2
+//#define REACTION(x) (2769.696970 -650.293318 * pow(x, 1) +57.019231 * pow(x, 2) -2.212510 * pow(x, 3) +0.032051 * pow(x, 4) )
+
+// F3
+//#define REACTION(x) (-1456.969697 +252.382479 * pow(x, 1) -14.475524 * pow(x, 2) +0.274864 * pow(x, 3) )
+
+// F4
+//#define REACTION(x) (-732.636364 +136.716200 * pow(x, 1) -8.433566 * pow(x, 2) +0.171911 * pow(x, 3) )
+
+// F5
+//#define REACTION(x) (-408.545455 +85.375291 * pow(x, 1) -5.775058 * pow(x, 2) +0.127040 * pow(x, 3) )
+
+// F6
+//#define REACTION(x) (397.272727 -48.275058 * pow(x, 1) +1.456876 * pow(x, 2) )
+
+// F7
+//#define REACTION(x) (-6680.303030 +1443.035354 * pow(x, 1) -114.976107 * pow(x, 2) +3.991453 * pow(x, 3) -0.050699 * pow(x, 4) )
+
+// F8
+//#define REACTION(x) (221.818182 -30.389277 * pow(x, 1) +1.025641 * pow(x, 2) )
+
+//F9
+//#define REACTION(x) (-7516.000000 +1645.078671 * pow(x, 1) -133.082459 * pow(x, 2) +4.701049 * pow(x, 3) -0.060897 * pow(x, 4) )
+
+// F10
+//#define REACTION(x) (112.363636 -18.119814 * pow(x, 1) +0.701632 * pow(x, 2) )
+
+// F11
+//#define REACTION(x) (-173847.074088 +55875.595836 * pow(x, 1) -7440.255326 * pow(x, 2) +525.236313 * pow(x, 3) -20.725644 * pow(x, 4) +0.433270 * pow(x, 5) -0.003747 * pow(x, 6) )
 
 
 extern uint32_t previousDistance;
