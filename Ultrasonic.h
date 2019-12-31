@@ -5,20 +5,19 @@
 #include <math.h>
 
 // Autonomus variables
-
-// F1
+// F1 hard
 //#define REACTION(x) (-1166.666667 +203.164141 * pow(x, 1) -11.754079 * pow(x, 2) +0.226301 * pow(x, 3) )
 
-// F2
+// F2 hard
 //#define REACTION(x) (2769.696970 -650.293318 * pow(x, 1) +57.019231 * pow(x, 2) -2.212510 * pow(x, 3) +0.032051 * pow(x, 4) )
 
-// F3
+// F3 hard
 //#define REACTION(x) (-1456.969697 +252.382479 * pow(x, 1) -14.475524 * pow(x, 2) +0.274864 * pow(x, 3) )
 
-// F4
+// F4 hard
 //#define REACTION(x) (-732.636364 +136.716200 * pow(x, 1) -8.433566 * pow(x, 2) +0.171911 * pow(x, 3) )
 
-// F5
+// F5 hard
 //#define REACTION(x) (-408.545455 +85.375291 * pow(x, 1) -5.775058 * pow(x, 2) +0.127040 * pow(x, 3) )
 
 // F6
@@ -27,7 +26,7 @@
 // F7
 //#define REACTION(x) (-6680.303030 +1443.035354 * pow(x, 1) -114.976107 * pow(x, 2) +3.991453 * pow(x, 3) -0.050699 * pow(x, 4) )
 
-// F8
+// F8 hard
 //#define REACTION(x) (221.818182 -30.389277 * pow(x, 1) +1.025641 * pow(x, 2) )
 
 //F9
@@ -39,6 +38,8 @@
 // F11
 //#define REACTION(x) (-173847.074088 +55875.595836 * pow(x, 1) -7440.255326 * pow(x, 2) +525.236313 * pow(x, 3) -20.725644 * pow(x, 4) +0.433270 * pow(x, 5) -0.003747 * pow(x, 6) )
 
+// F12
+#define REACTION(x) (-3354.254731 +758.466494 * pow(x, 1) -62.914941 * pow(x, 2) +2.275595 * pow(x, 3) -0.030062 * pow(x, 4) )
 
 extern uint32_t previousDistance;
 extern uint32_t ultrasonicSensorDistance2; // continous 2-sensor
