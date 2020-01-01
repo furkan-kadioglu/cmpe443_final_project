@@ -3,6 +3,7 @@
 uint32_t MODE = TEST;
 uint32_t ACTION = STOP_ACTION; 
 
+
 void Clear_Action(){
 	// Reset 
 	MOTOR_ON = 0;
@@ -122,12 +123,16 @@ void STATUS (void) {
 	\"light_level_left\":%d,\
 	\"light_level_right\":%d,\
 	\"op_mode\":\"%s\",\
-	\"pot_level\":%d}\r\n",
-	ultrasonicSensorDistance/1000, 
+	\"pot_level\":%d,\
+	\"distance2\":%d,\
+	op = %s}\r\n",
+	ultrasonicSensorDistance/10000, 
 	LDR1_Last_Light_Level, 
 	LDR2_Last_Light_Level, 
 	stringFromMode(MODE),
-	MOTOR_POWER_IN_PERCENT);
+	MOTOR_POWER_IN_PERCENT,
+	ultrasonicSensorDistance2/10000,
+	stringFromAutoMode(AUTO_MODE));
 	
 	Response();
 

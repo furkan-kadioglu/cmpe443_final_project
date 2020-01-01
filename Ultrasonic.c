@@ -8,7 +8,14 @@ uint8_t  ultrasonicAvailable = 0;
 
 uint8_t ultrasonicSensorTriggerStart = 0;
 uint8_t race_start = 0;
+char operation [3] =  {'s','s','s'};
+uint32_t AUTO_MODE = Straight;
 
+void shift(char x){
+	operation[0] = operation[1];
+	operation[1] = operation[2];
+	operation[2] = x;
+}
 
 // continous 2-sensor
 uint32_t ultrasonicSensorDistance2 = 0; 

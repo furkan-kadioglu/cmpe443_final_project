@@ -1,8 +1,5 @@
 #include "TEST.h"
-#define DIVIDER 1.2
-
-enum AUTO_TURNING_MODES {R, L, S};
-uint8_t AUTO_TURNING_MODE = S;
+uint32_t counter = 0;
 
 void init() {
 	MOTOR_Init();
@@ -89,9 +86,13 @@ void update() {
 			
 			if(!strcmp(serialBuffer, "START\r\n") && MODE == AUTO){
 				Request("START\r\n");
-				AUTO_TURNING_MODE = S;
+				operation[0] = 's';
+				operation[1] = 's';
+				operation[2] = 's';
+				AUTO_MODE = Straight;
 				START();
 			}
+			
 
 			Clear_serialBuffer();
 		}
@@ -99,72 +100,65 @@ void update() {
 	if(race_start){
 		
 		if(ultrasonicAvailable){
+			
 			ultrasonicAvailable = 0;
-			
-			// Noise Elimination - Exponential Weighted Average
-			/*
-			if(!previousDistance)
-				previousDistance = ultrasonicSensorDistance;
-			ultrasonicSensorDistance = 0.9 * previousDistance + 0.1 * ultrasonicSensorDistance;
-			*/
-			 
-			/* CONTINOUS // 1-sensor  */
-			
-			// Duvar devirmesin diye ikinci sensor 
-			if(ultrasonicSensorDistance2 < 250000)
-			{
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance2/10000));
-				AUTO_TURNING_MODE = R;
+			counter++;
+			if(counter == 8){
+				//STATUS();
+				counter = 0;
 			}
 			
-			// 24 --- 26
-			else if(SPECIFIED_DISTANCE-10000 < (int32_t)ultrasonicSensorDistance \
-				&& SPECIFIED_DISTANCE+10000 > (int32_t)ultrasonicSensorDistance)
-			{	
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
-				AUTO_TURNING_MODE = S;
-			}
-				
-			// 0 --- 24
-			else if(SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance )
-			{
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000));
-				AUTO_TURNING_MODE = R;
-			}
+			MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
+			MOTOR_DRIVER_IN2_PORT->CLR |= MOTOR_DRIVER_IN2_MASK;
+			MOTOR_DRIVER_IN3_PORT->SET |= MOTOR_DRIVER_IN3_MASK;
+			MOTOR_DRIVER_IN4_PORT->CLR |= MOTOR_DRIVER_IN4_MASK;
 			
-			// 26 --- 50
-			else if(2*SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance)
-			{	
-				SET_MOTOR_POWER(REACTION((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000), MOTOR_POWER_IN_PERCENT);
-				AUTO_TURNING_MODE = L;
+			if(ultrasonicSensorDistance2 < 300000 ){
+				AUTO_MODE = Direct;
+				MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
+				MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
+				SET_MOTOR_POWER(50, 50);
 			}
-			
-			// Farazi mode  50+
 			else
-			{	
-					if(AUTO_TURNING_MODE == L)
-						SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT /4);
+			{
 					
-					else
-						SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT /4, MOTOR_POWER_IN_PERCENT);
+				// 24 --- 26
+				if(SPECIFIED_DISTANCE-10000 < (int32_t)ultrasonicSensorDistance &&\
+					 SPECIFIED_DISTANCE+10000 > (int32_t)ultrasonicSensorDistance )
+				{	
+					AUTO_MODE = Straight;
+					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
+					shift('s');
+				}
+					
+				// 0 --- 24
+				else if(SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance )
+				{
+					AUTO_MODE = Close;
+					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000));
+					shift('r');
+				}
+				
+				// 26 --- 50
+				else if(2*SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance )
+				{	
+					AUTO_MODE = Far;
+					SET_MOTOR_POWER(REACTION2((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000), MOTOR_POWER_IN_PERCENT);
+					shift('l');
+				}
+				
+				// Farazi mode 50+
+				else
+				{		
+					//MOTOR_DRIVER_IN3_PORT->CLR |= MOTOR_DRIVER_IN3_MASK;
+					//MOTOR_DRIVER_IN4_PORT->SET |= MOTOR_DRIVER_IN4_MASK;
+					
+					SET_MOTOR_POWER(0, 80);
+					AUTO_MODE = Farazi;
+				}
+				
 			}
 			
-			 
-			/* CONTINOUS // 2-sensor 
-			//if(!previousDistance2)
-			//	previousDistance2 = ultrasonicSensorDistance2;
-			//ultrasonicSensorDistance2 = 0.9 * previousDistance2 + 0.1 * ultrasonicSensorDistance2;
-			
-			if(ultrasonicSensorDistance2 < 1000000){
-				cosTheta = ultrasonicSensorDistance / pow(pow(ultrasonicSensorDistance,2) + pow(ultrasonicSensorDistance2,2), 0.5);
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, (40 / (90.001 - (acos(cosTheta)*180/PI))));
-			}
-			else
-				SET_MOTOR_POWER(REACTION(50 - (ultrasonicSensorDistance/10000)), MOTOR_POWER_IN_PERCENT);
-		
-			previousDistance2 = ultrasonicSensorDistance2;
-			previousDistance = ultrasonicSensorDistance;
-			*/ 
 			
 		}
 	}

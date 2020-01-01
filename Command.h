@@ -14,6 +14,7 @@ static inline char *stringFromMode(uint32_t mode)
     return strings[mode];
 }
 
+
 enum LAST_ACTIONS {STOP_ACTION, FORWARD_ACTION, BACK_ACTION, LEFT_ACTION, RIGHT_ACTION};
 extern uint32_t ACTION;
 

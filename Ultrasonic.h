@@ -6,7 +6,7 @@
 
 // Autonomus variables
 // F1 hard
-//#define REACTION(x) (-1166.666667 +203.164141 * pow(x, 1) -11.754079 * pow(x, 2) +0.226301 * pow(x, 3) )
+#define REACTION2(x) (-1166.666667 +203.164141 * pow(x, 1) -11.754079 * pow(x, 2) +0.226301 * pow(x, 3) )
 
 // F2 hard
 //#define REACTION(x) (2769.696970 -650.293318 * pow(x, 1) +57.019231 * pow(x, 2) -2.212510 * pow(x, 3) +0.032051 * pow(x, 4) )
@@ -18,7 +18,7 @@
 //#define REACTION(x) (-732.636364 +136.716200 * pow(x, 1) -8.433566 * pow(x, 2) +0.171911 * pow(x, 3) )
 
 // F5 hard
-//#define REACTION(x) (-408.545455 +85.375291 * pow(x, 1) -5.775058 * pow(x, 2) +0.127040 * pow(x, 3) )
+#define REACTION(x) (-408.545455 +85.375291 * pow(x, 1) -5.775058 * pow(x, 2) +0.127040 * pow(x, 3) )
 
 // F6
 //#define REACTION(x) (397.272727 -48.275058 * pow(x, 1) +1.456876 * pow(x, 2) )
@@ -45,7 +45,7 @@
 //#define REACTION(x) (-1.521515 +1.250860 * pow(x, 1) -0.108126 * pow(x, 2) -0.009067 * pow(x, 3) +0.000728 * pow(x, 4) )
 
 // F14
-#define REACTION(x) (2.464277 -5.304008 * pow(x, 1) +1.870985 * pow(x, 2) -0.225949 * pow(x, 3) +0.010574 * pow(x, 4) -0.000158 * pow(x, 5) )
+//#define REACTION(x) (2.464277 -5.304008 * pow(x, 1) +1.870985 * pow(x, 2) -0.225949 * pow(x, 3) +0.010574 * pow(x, 4) -0.000158 * pow(x, 5) )
 
 extern uint32_t previousDistance;
 extern uint32_t ultrasonicSensorDistance2; // continous 2-sensor
@@ -66,6 +66,17 @@ extern uint32_t previousDistance2;
 
 #define SPECIFIED_DISTANCE 250000
 extern uint8_t race_start;
+extern char operation [3];
+void shift(char x);
+
+enum AUTO_MODES {Close, Far, Farazi, Direct, Straight};
+extern uint32_t AUTO_MODE;
+static inline char *stringFromAutoMode(uint32_t mode)
+{
+    static char *strings[] = {"Close", "Far", "Farazi", "Direct", "Straight"};
+    return strings[mode];
+}
+
 
 extern uint32_t ultrasonicSensorRisingCaptureTime;
 extern uint32_t ultrasonicSensorFallingCaptureTime;
