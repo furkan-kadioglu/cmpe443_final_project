@@ -6,7 +6,7 @@
 
 // Autonomus variables
 // F1 hard
-#define REACTION2(x) (-1166.666667 +203.164141 * pow(x, 1) -11.754079 * pow(x, 2) +0.226301 * pow(x, 3) )
+//#define REACTION(x) (-1166.666667 +203.164141 * pow(x, 1) -11.754079 * pow(x, 2) +0.226301 * pow(x, 3) )
 
 // F2 hard
 //#define REACTION(x) (2769.696970 -650.293318 * pow(x, 1) +57.019231 * pow(x, 2) -2.212510 * pow(x, 3) +0.032051 * pow(x, 4) )
@@ -66,17 +66,6 @@ extern uint32_t previousDistance2;
 
 #define SPECIFIED_DISTANCE 250000
 extern uint8_t race_start;
-extern char operation [3];
-void shift(char x);
-
-enum AUTO_MODES {Close, Far, Farazi, Direct, Straight};
-extern uint32_t AUTO_MODE;
-static inline char *stringFromAutoMode(uint32_t mode)
-{
-    static char *strings[] = {"Close", "Far", "Farazi", "Direct", "Straight"};
-    return strings[mode];
-}
-
 
 extern uint32_t ultrasonicSensorRisingCaptureTime;
 extern uint32_t ultrasonicSensorFallingCaptureTime;

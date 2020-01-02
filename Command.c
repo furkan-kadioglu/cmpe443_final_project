@@ -101,7 +101,6 @@ void LEFT(){
 	// Set Signal
 	Start_Signal(LEFT_SIGNAL_PORT, LEFT_SIGNAL_MASK);
 
-
 }
 
 void START(void){
@@ -124,15 +123,13 @@ void STATUS (void) {
 	\"light_level_right\":%d,\
 	\"op_mode\":\"%s\",\
 	\"pot_level\":%d,\
-	\"distance2\":%d,\
-	op = %s}\r\n",
+	\"distance2\":%d}\r\n",
 	ultrasonicSensorDistance/10000, 
 	LDR1_Last_Light_Level, 
 	LDR2_Last_Light_Level, 
 	stringFromMode(MODE),
 	MOTOR_POWER_IN_PERCENT,
-	ultrasonicSensorDistance2/10000,
-	stringFromAutoMode(AUTO_MODE));
+	ultrasonicSensorDistance2/10000);
 	
 	Response();
 

@@ -28,3 +28,11 @@ extern GPIO_TypeDef* TURNING_PORT;
 void Signal_Init(void);
 void Start_Signal(GPIO_TypeDef* PORT, uint32_t MASK);
 void Finish_Signal(void);
+
+
+// AUTO Signals' Variables
+enum previous_signals {R, L, S};
+extern uint32_t previous_signal;
+void AUTO_LEFT_SIGNAL(void);
+void AUTO_RIGHT_SIGNAL(void);
+

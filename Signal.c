@@ -5,6 +5,27 @@ uint8_t TURN_ON = 0;
 uint32_t TURNING_MASK;
 GPIO_TypeDef* TURNING_PORT;
 
+// AUTO Signals 
+uint32_t previous_signal = S;
+
+void AUTO_LEFT_SIGNAL(void){
+	
+	if(previous_signal != L)
+	{
+		Finish_Signal();
+		Start_Signal(LEFT_SIGNAL_PORT, LEFT_SIGNAL_MASK);
+	}
+}
+
+void AUTO_RIGHT_SIGNAL(void){
+	
+	if(previous_signal != R)
+	{
+		Finish_Signal();
+		Start_Signal(RIGHT_SIGNAL_PORT, RIGHT_SIGNAL_MASK);
+	}
+}
+
 static uint32_t milisecond_counter = 0;
 
 void Signal_Init(){

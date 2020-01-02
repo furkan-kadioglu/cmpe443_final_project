@@ -84,7 +84,6 @@ void update() {
 			
 			if(!strcmp(serialBuffer, "START\r\n") && MODE == AUTO){
 				Request("START\r\n");
-				AUTO_MODE = Straight;
 				START();
 			}
 			
@@ -97,52 +96,76 @@ void update() {
 		if(ultrasonicAvailable){
 			
 			ultrasonicAvailable = 0;
-				if(!previousDistance)
-					previousDistance = ultrasonicSensorDistance;
-				ultrasonicSensorDistance = 0.8 * previousDistance + 0.2 * ultrasonicSensorDistance;
-			
-				MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
-				MOTOR_DRIVER_IN2_PORT->CLR |= MOTOR_DRIVER_IN2_MASK;
-				MOTOR_DRIVER_IN3_PORT->SET |= MOTOR_DRIVER_IN3_MASK;
-				MOTOR_DRIVER_IN4_PORT->CLR |= MOTOR_DRIVER_IN4_MASK;
 		
-				// Direct Mode
-				if(ultrasonicSensorDistance2 < 250000)
+			MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
+			MOTOR_DRIVER_IN2_PORT->CLR |= MOTOR_DRIVER_IN2_MASK;
+			MOTOR_DRIVER_IN3_PORT->SET |= MOTOR_DRIVER_IN3_MASK;
+			MOTOR_DRIVER_IN4_PORT->CLR |= MOTOR_DRIVER_IN4_MASK;
+	
+			// Direct Mode
+			if(ultrasonicSensorDistance2 < 250000) // Observe 25cm 
+			{
+				MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
+				MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
+				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT/2, MOTOR_POWER_IN_PERCENT/2);
+				
+				AUTO_RIGHT_SIGNAL();
+			}
+				
+			else
+			{
+				
+				if(ultrasonicSensorDistance < 50)
 				{
-					MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
-					MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
-					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT/2, MOTOR_POWER_IN_PERCENT/2);
-					AUTO_MODE = Direct;
+					if(!previousDistance)
+						previousDistance = ultrasonicSensorDistance;
+					
+					ultrasonicSensorDistance = 0.9 * previousDistance + 0.1 * ultrasonicSensorDistance;
 				}
 					
+				
 				// 24 --- 26
-				else if(SPECIFIED_DISTANCE-10000 < (int32_t)ultrasonicSensorDistance &&\
+				if(SPECIFIED_DISTANCE-10000 < (int32_t)ultrasonicSensorDistance &&\
 					 SPECIFIED_DISTANCE+10000 > (int32_t)ultrasonicSensorDistance )
-				{	
-					AUTO_MODE = Straight;
-					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
-				}
-					
-				// 0 --- 24
-				else if(SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance )
 				{
-					AUTO_MODE = Close;
-					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000));
+					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
+					Finish_Signal();
 				}
 				
-				// 26 --- 50
-				else if(2*SPECIFIED_DISTANCE > (int32_t)ultrasonicSensorDistance )
-				{	
-					AUTO_MODE = Far;
-					SET_MOTOR_POWER(REACTION2((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000), MOTOR_POWER_IN_PERCENT);
+					
+				// 0 --- 24
+				else if(SPECIFIED_DISTANCE > ultrasonicSensorDistance )
+				{
+					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000));
+					AUTO_RIGHT_SIGNAL();
 				}
+								
+				
+				// 26 --- 50
+				else if(2*SPECIFIED_DISTANCE > ultrasonicSensorDistance )
+				{
+					SET_MOTOR_POWER(REACTION((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000), MOTOR_POWER_IN_PERCENT);
+					AUTO_LEFT_SIGNAL();
+				}
+				
 				
 				// Farazi mode 50+
 				else
-				{		
+				{
 					SET_MOTOR_POWER(8, 100);
-					AUTO_MODE = Farazi;
+					AUTO_LEFT_SIGNAL();
 				}
+					
+				
+				// Farazi don't overturn filter
+				if(ultrasonicSensorDistance < 50)
+					previousDistance = ultrasonicSensorDistance;
+				/*
+				else 
+					previousDistance = 0.9 * previousDistance + 0.1 * 2 * SPECIFIED_DISTANCE; 
+				*/
+			
+			}
 		}
 	}
 
