@@ -150,10 +150,8 @@ void update() {
 				// Farazi mode 50+
 				else
 				{		
-					//MOTOR_DRIVER_IN3_PORT->CLR |= MOTOR_DRIVER_IN3_MASK;
-					//MOTOR_DRIVER_IN4_PORT->SET |= MOTOR_DRIVER_IN4_MASK;
-					
-					SET_MOTOR_POWER(0, 80);
+		
+					SET_MOTOR_POWER(0, 100);
 					AUTO_MODE = Farazi;
 				}
 				
