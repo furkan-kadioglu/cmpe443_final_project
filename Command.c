@@ -116,15 +116,11 @@ void STATUS (void) {
 	{\"distance\":%d,\
 	\"light_level_left\":%d,\
 	\"light_level_right\":%d,\
-	\"op_mode\":\"%s\",\
-	\"pot_level\":%d,\
-	\"distance2\":%d}\r\n",
+	\"op_mode\":\"%s\"}\r\n",
 	ultrasonicSensorDistance/10000, 
 	LDR1_Last_Light_Level, 
 	LDR2_Last_Light_Level, 
-	stringFromMode(MODE),
-	MOTOR_POWER_IN_PERCENT,
-	ultrasonicSensorDistance2/10000);
+	stringFromMode(MODE));
 	
 	Response();
 
