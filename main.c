@@ -1,5 +1,11 @@
 #include "TEST.h"
 
+#define ALPHA 0.8
+#define BETA 0.999
+
+double_t s_t = 0, s_t1 = 0, b_t1 = 0;
+
+
 void init() {
 	MOTOR_Init();
 	TIMER_Init();
@@ -84,7 +90,7 @@ void update() {
 			
 			if(!strcmp(serialBuffer, "START\r\n") && MODE == AUTO){
 				Request("START\r\n");
-				previousDistance = 0;
+				s_t = 0, s_t1 = 0, b_t1 = 0;
 				START();
 			}
 			
@@ -104,7 +110,7 @@ void update() {
 			MOTOR_DRIVER_IN4_PORT->CLR |= MOTOR_DRIVER_IN4_MASK;
 	
 			// Direct Mode
-			if(ultrasonicSensorDistance2 < 250000) // Observe 25cm 
+			if(ultrasonicSensorDistance2 < 300000) // Observe 25cm 
 			{
 				MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
 				MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
@@ -118,10 +124,17 @@ void update() {
 				
 				if(ultrasonicSensorDistance < 500000)
 				{
-					if(!previousDistance)
-						previousDistance = ultrasonicSensorDistance;
+					if(!s_t1)
+						s_t1 = ultrasonicSensorDistance;
 					
-					//ultrasonicSensorDistance = 0.8 * previousDistance + 0.2 * ultrasonicSensorDistance;
+					if(!b_t1)
+						b_t1 = ultrasonicSensorDistance - SPECIFIED_DISTANCE;
+					
+					s_t = ALPHA * ultrasonicSensorDistance + (1-ALPHA) * (s_t1 + b_t1);
+					b_t1 = BETA * (s_t - s_t1) + (1-BETA) * b_t1;
+						
+					ultrasonicSensorDistance = s_t;
+					s_t1 = s_t;
 				}
 					
 				
@@ -156,17 +169,6 @@ void update() {
 					SET_MOTOR_POWER(0, 100);
 					AUTO_LEFT_SIGNAL();
 				}
-					
-				
-				// Farazi don't overturn filter
-				if(ultrasonicSensorDistance < 500000)
-					previousDistance = ultrasonicSensorDistance;
-			
-				/*
-				else 
-					previousDistance = 0.9 * previousDistance + 0.1 * 500000; 
-				*/
-			
 			}
 		}
 	}
