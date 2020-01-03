@@ -84,6 +84,7 @@ void update() {
 			
 			if(!strcmp(serialBuffer, "START\r\n") && MODE == AUTO){
 				Request("START\r\n");
+				previousDistance = 0;
 				START();
 			}
 			
@@ -107,7 +108,7 @@ void update() {
 			{
 				MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
 				MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
-				SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT/2, MOTOR_POWER_IN_PERCENT/2);
+				SET_MOTOR_POWER(60, 60);
 				
 				AUTO_RIGHT_SIGNAL();
 			}
@@ -115,12 +116,12 @@ void update() {
 			else
 			{
 				
-				if(ultrasonicSensorDistance < 50)
+				if(ultrasonicSensorDistance < 500000)
 				{
 					if(!previousDistance)
 						previousDistance = ultrasonicSensorDistance;
 					
-					ultrasonicSensorDistance = 0.9 * previousDistance + 0.1 * ultrasonicSensorDistance;
+					ultrasonicSensorDistance = 0.8 * previousDistance + 0.2 * ultrasonicSensorDistance;
 				}
 					
 				
@@ -152,17 +153,18 @@ void update() {
 				// Farazi mode 50+
 				else
 				{
-					SET_MOTOR_POWER(8, 100);
+					SET_MOTOR_POWER(15, 100);
 					AUTO_LEFT_SIGNAL();
 				}
 					
 				
 				// Farazi don't overturn filter
-				if(ultrasonicSensorDistance < 50)
+				if(ultrasonicSensorDistance < 500000)
 					previousDistance = ultrasonicSensorDistance;
+			
 				/*
 				else 
-					previousDistance = 0.9 * previousDistance + 0.1 * 2 * SPECIFIED_DISTANCE; 
+					previousDistance = 0.9 * previousDistance + 0.1 * 500000; 
 				*/
 			
 			}
