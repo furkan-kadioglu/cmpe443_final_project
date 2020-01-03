@@ -161,7 +161,7 @@
           <SizeOfObject>0</SizeOfObject>
           <BreakByAccess>0</BreakByAccess>
           <BreakIfRCount>1</BreakIfRCount>
-          <Filename>RTE\Device\LPC4088FET208\startup_LPC407x_8x_177x_8x.s</Filename>
+          <Filename>\vmware-host\Shared Folders\Desktop\CourseMaterials\cmpe443\cmpe443_final_project\RTE\Device\LPC4088FET208\startup_LPC407x_8x_177x_8x.s</Filename>
           <ExecCommand></ExecCommand>
           <Expression>\\MATER\RTE/Device/LPC4088FET208/startup_LPC407x_8x_177x_8x.s\132</Expression>
         </Bp>
@@ -237,6 +237,16 @@
           <WinNumber>1</WinNumber>
           <ItemText>serialBuffer</ItemText>
         </Ww>
+        <Ww>
+          <count>14</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>\\MATER\ADC.c\LDR2_Last_Light_Level</ItemText>
+        </Ww>
+        <Ww>
+          <count>15</count>
+          <WinNumber>1</WinNumber>
+          <ItemText>MODE</ItemText>
+        </Ww>
       </WatchWindow1>
       <WatchWindow2>
         <Ww>
@@ -304,6 +314,10 @@
       <pSingCmdsp></pSingCmdsp>
       <pMultCmdsp></pMultCmdsp>
       <SystemViewers>
+        <Entry>
+          <Name>System Viewer\ADC</Name>
+          <WinId>35901</WinId>
+        </Entry>
         <Entry>
           <Name>System Viewer\FLASHCTRL</Name>
           <WinId>35902</WinId>
@@ -390,7 +404,7 @@
       <GroupNumber>2</GroupNumber>
       <FileNumber>5</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\Signal.c</PathWithFileName>
@@ -462,7 +476,7 @@
       <GroupNumber>2</GroupNumber>
       <FileNumber>11</FileNumber>
       <FileType>1</FileType>
-      <tvExp>1</tvExp>
+      <tvExp>0</tvExp>
       <tvExpOptDlg>0</tvExpOptDlg>
       <bDave2>0</bDave2>
       <PathWithFileName>.\ADC.c</PathWithFileName>

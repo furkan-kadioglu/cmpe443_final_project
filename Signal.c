@@ -12,8 +12,8 @@ void AUTO_LEFT_SIGNAL(void){
 	
 	if(previous_signal != L)
 	{
-		Finish_Signal();
-		Start_Signal(LEFT_SIGNAL_PORT, LEFT_SIGNAL_MASK);
+		RIGHT_SIGNAL_PORT->CLR |= RIGHT_SIGNAL_MASK;
+		LEFT_SIGNAL_PORT->SET |= LEFT_SIGNAL_MASK;
 	}
 }
 
@@ -22,7 +22,8 @@ void AUTO_RIGHT_SIGNAL(void){
 	if(previous_signal != R)
 	{
 		Finish_Signal();
-		Start_Signal(RIGHT_SIGNAL_PORT, RIGHT_SIGNAL_MASK);
+		LEFT_SIGNAL_PORT->CLR |= LEFT_SIGNAL_MASK;
+		RIGHT_SIGNAL_PORT->SET |= RIGHT_SIGNAL_MASK;
 	}
 }
 
@@ -67,8 +68,8 @@ void Start_Signal(GPIO_TypeDef* PORT, uint32_t MASK){
 }
 void Finish_Signal(){
 	
-	RIGHT_SIGNAL_PORT->CLR 	|= TURNING_MASK;
-	LEFT_SIGNAL_PORT->CLR 	|= TURNING_MASK;
+	RIGHT_SIGNAL_PORT->CLR 	|= RIGHT_SIGNAL_MASK;
+	LEFT_SIGNAL_PORT->CLR 	|= LEFT_SIGNAL_MASK;
 	
 	NVIC_DisableIRQ(TIMER1_IRQn);
 	TIMER1->MCR &= ~8;

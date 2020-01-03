@@ -27,7 +27,7 @@
 //#define REACTION(x) (-6680.303030 +1443.035354 * pow(x, 1) -114.976107 * pow(x, 2) +3.991453 * pow(x, 3) -0.050699 * pow(x, 4) )
 
 // F8 hard
-#define REACTION(x) (221.818182 -30.389277 * pow(x, 1) +1.025641 * pow(x, 2) )
+//#define REACTION(x) (221.818182 -30.389277 * pow(x, 1) +1.025641 * pow(x, 2) )
 
 //F9
 //#define REACTION(x) (-7516.000000 +1645.078671 * pow(x, 1) -133.082459 * pow(x, 2) +4.701049 * pow(x, 3) -0.060897 * pow(x, 4) )
@@ -46,6 +46,18 @@
 
 // F14
 //#define REACTION(x) (2.464277 -5.304008 * pow(x, 1) +1.870985 * pow(x, 2) -0.225949 * pow(x, 3) +0.010574 * pow(x, 4) -0.000158 * pow(x, 5) )
+
+// F15 (extended F8)
+//#define REACTION(x) (19.726144 +1.953020 * pow(x, 1) -0.455605 * pow(x, 2) +0.073484 * pow(x, 3) -0.004709 * pow(x, 4) +0.000103 * pow(x, 5) )
+
+// F16 (extended F8)
+//#define REACTION(x) (14.706797 +2.236995 * pow(x, 1) -0.465336 * pow(x, 2) +0.074350 * pow(x, 3) -0.004731 * pow(x, 4) +0.000103 * pow(x, 5) )
+
+// F17 (extended F8)
+#define REACTION(x) (14.060493 +3.974421 * pow(x, 1) -1.503990 * pow(x, 2) +0.264029 * pow(x, 3) -0.020333 * pow(x, 4) +0.000689 * pow(x, 5) -0.000008 * pow(x, 6) )
+
+// F18 (extended F8)
+//#define REACTION(x) (0.807488 -0.043730 * pow(x, 1) +0.323392 * pow(x, 2) -0.020413 * pow(x, 3) -0.000207 * pow(x, 4) +0.000031 * pow(x, 5) )
 
 extern uint32_t previousDistance;
 extern uint32_t ultrasonicSensorDistance2; // continous 2-sensor

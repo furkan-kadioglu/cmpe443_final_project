@@ -58,7 +58,6 @@ void STOP(){
 
 	Clear_Action();
 	SET_MOTOR_POWER(0, 0);
-	race_start = 0;
 	
 }
 
@@ -78,10 +77,6 @@ void RIGHT(){
 
 	// Set Signal
 	Start_Signal(RIGHT_SIGNAL_PORT, RIGHT_SIGNAL_MASK);
-
-	
-	
-
 }
 
 void LEFT(){

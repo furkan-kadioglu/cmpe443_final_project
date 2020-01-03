@@ -121,7 +121,7 @@ void update() {
 					if(!previousDistance)
 						previousDistance = ultrasonicSensorDistance;
 					
-					ultrasonicSensorDistance = 0.8 * previousDistance + 0.2 * ultrasonicSensorDistance;
+					//ultrasonicSensorDistance = 0.8 * previousDistance + 0.2 * ultrasonicSensorDistance;
 				}
 					
 				
@@ -153,7 +153,7 @@ void update() {
 				// Farazi mode 50+
 				else
 				{
-					SET_MOTOR_POWER(15, 100);
+					SET_MOTOR_POWER(0, 100);
 					AUTO_LEFT_SIGNAL();
 				}
 					
@@ -216,11 +216,8 @@ void update() {
 		
 		else{
 			if(race_start){		
-				if(LDR1_Last_Light_Level > light_threshold || LDR2_Last_Light_Level > light_threshold){
-					race_start = 0;
-					STOP();
+				if(LDR1_Last_Light_Level > light_threshold || LDR2_Last_Light_Level > light_threshold)
 					FINISH();
-				}
 			}
 			
 		}
