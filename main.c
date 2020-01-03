@@ -1,7 +1,8 @@
 #include "TEST.h"
 
 #define ALPHA 0.8
-#define BETA 0.999
+#define BETA 0.99
+#define DIVIDER MOTOR_POWER_IN_PERCENT/100.0
 
 double_t s_t = 0, s_t1 = 0, b_t1 = 0;
 
@@ -114,7 +115,7 @@ void update() {
 			{
 				MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
 				MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
-				SET_MOTOR_POWER(60, 60);
+				SET_MOTOR_POWER(60*DIVIDER, 60*DIVIDER);
 				
 				AUTO_RIGHT_SIGNAL();
 			}
@@ -150,7 +151,7 @@ void update() {
 				// 0 --- 24
 				else if(SPECIFIED_DISTANCE > ultrasonicSensorDistance )
 				{
-					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000));
+					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000)*DIVIDER);
 					AUTO_RIGHT_SIGNAL();
 				}
 								
@@ -158,7 +159,7 @@ void update() {
 				// 26 --- 50
 				else if(2*SPECIFIED_DISTANCE > ultrasonicSensorDistance )
 				{
-					SET_MOTOR_POWER(REACTION((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000), MOTOR_POWER_IN_PERCENT);
+					SET_MOTOR_POWER(REACTION((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000)*DIVIDER, MOTOR_POWER_IN_PERCENT);
 					AUTO_LEFT_SIGNAL();
 				}
 				
@@ -166,7 +167,7 @@ void update() {
 				// Farazi mode 50+
 				else
 				{
-					SET_MOTOR_POWER(0, 100);
+					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT * 0.06 , MOTOR_POWER_IN_PERCENT);
 					AUTO_LEFT_SIGNAL();
 				}
 			}

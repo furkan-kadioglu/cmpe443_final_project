@@ -54,10 +54,16 @@
 //#define REACTION(x) (14.706797 +2.236995 * pow(x, 1) -0.465336 * pow(x, 2) +0.074350 * pow(x, 3) -0.004731 * pow(x, 4) +0.000103 * pow(x, 5) )
 
 // F17 (extended F8)
-#define REACTION(x) (14.060493 +3.974421 * pow(x, 1) -1.503990 * pow(x, 2) +0.264029 * pow(x, 3) -0.020333 * pow(x, 4) +0.000689 * pow(x, 5) -0.000008 * pow(x, 6) )
+//#define REACTION(x) (14.060493 +3.974421 * pow(x, 1) -1.503990 * pow(x, 2) +0.264029 * pow(x, 3) -0.020333 * pow(x, 4) +0.000689 * pow(x, 5) -0.000008 * pow(x, 6) )
 
 // F18 (extended F8)
 //#define REACTION(x) (0.807488 -0.043730 * pow(x, 1) +0.323392 * pow(x, 2) -0.020413 * pow(x, 3) -0.000207 * pow(x, 4) +0.000031 * pow(x, 5) )
+
+// F19
+//#define REACTION(x) (14.473300 +2.866743 * pow(x, 1) -0.746249 * pow(x, 2) +0.121245 * pow(x, 3) -0.008313 * pow(x, 4) +0.000230 * pow(x, 5) -0.000002 * pow(x, 6) )
+
+// F20
+#define REACTION(x) (10.193083 +0.697011 * pow(x, 1) -0.101389 * pow(x, 2) +0.030777 * pow(x, 3) -0.002705 * pow(x, 4) +0.000073 * pow(x, 5) )
 
 extern uint32_t previousDistance;
 extern uint32_t ultrasonicSensorDistance2; // continous 2-sensor
