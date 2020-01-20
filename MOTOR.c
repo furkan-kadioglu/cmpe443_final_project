@@ -1,7 +1,7 @@
 #include "MOTOR.h"
 #include "GPIO.h"
 
-uint32_t MOTOR_POWER_IN_PERCENT = 50;
+uint32_t MOTOR_POWER_IN_PERCENT = 0;
 uint8_t MOTOR_ON = 0;
 
 void MOTOR_Init() {
@@ -37,15 +37,17 @@ void MOTOR_Init() {
 	MOTOR_DRIVER_IN3_PORT->DIR |= MOTOR_DRIVER_IN3_MASK;
 	MOTOR_DRIVER_IN4_PORT->DIR |= MOTOR_DRIVER_IN4_MASK;
 	
+	/*
 	MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
 	MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
 	MOTOR_DRIVER_IN3_PORT->SET |= MOTOR_DRIVER_IN3_MASK;
 	MOTOR_DRIVER_IN4_PORT->SET |= MOTOR_DRIVER_IN4_MASK;
+	*/
 	
 }
 
 
-void SET_MOTOR_POWER(uint32_t left, uint32_t right){
+void SET_MOTOR_POWER(int32_t left, int32_t right){
 	if(left > 100) {
 		left = 100;
 	}
@@ -53,9 +55,17 @@ void SET_MOTOR_POWER(uint32_t left, uint32_t right){
 		right = 100;
 	}
 	
-	//Write a formula to calculate the match register of the PWM pin.
-	PWM_MOTOR->MR6 = PWM_MOTOR->MR0  * right * MAX_MOTOR_DUTY_CYCLE / 10000;
-	PWM_MOTOR->MR5 = PWM_MOTOR->MR0  * left  * MAX_MOTOR_DUTY_CYCLE  /10000;
+	if(left <= 0) 
+		PWM_MOTOR->MR5 = 1;
+	else
+		PWM_MOTOR->MR5 = PWM_MOTOR->MR0  * left  * MAX_MOTOR_DUTY_CYCLE  /10000;
+	if(right <= 0) 
+		PWM_MOTOR->MR6 = 1;
+	else
+		PWM_MOTOR->MR6 = PWM_MOTOR->MR0  * right * MAX_MOTOR_DUTY_CYCLE / 10000;
+	
+	
+	
 	
 	//Enable PWM Match Register Latch.
 	PWM_MOTOR->LER |= (3 << 5);

@@ -443,11 +443,6 @@
               <FilePath>.\ADC.c</FilePath>
             </File>
             <File>
-              <FileName>External.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\External.c</FilePath>
-            </File>
-            <File>
               <FileName>Serial.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Serial.c</FilePath>
@@ -461,6 +456,11 @@
               <FileName>TEST.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\TEST.c</FilePath>
+            </File>
+            <File>
+              <FileName>MotorSpeedSensor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\MotorSpeedSensor.c</FilePath>
             </File>
           </Files>
         </Group>

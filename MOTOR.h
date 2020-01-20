@@ -26,7 +26,5 @@ extern uint32_t MOTOR_POWER_IN_PERCENT;
 extern uint8_t MOTOR_ON;
 
 
-#define AUTO_DUTY_CYCLE 50
-
 void MOTOR_Init(void);
-void SET_MOTOR_POWER(uint32_t left, uint32_t right);
+void SET_MOTOR_POWER(int32_t left, int32_t right);

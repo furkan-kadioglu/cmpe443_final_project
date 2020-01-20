@@ -5,6 +5,28 @@ uint8_t TURN_ON = 0;
 uint32_t TURNING_MASK;
 GPIO_TypeDef* TURNING_PORT;
 
+// AUTO Signals 
+uint32_t previous_signal = S;
+
+void AUTO_LEFT_SIGNAL(void){
+	
+	if(previous_signal != L)
+	{
+		RIGHT_SIGNAL_PORT->CLR |= RIGHT_SIGNAL_MASK;
+		LEFT_SIGNAL_PORT->SET |= LEFT_SIGNAL_MASK;
+	}
+}
+
+void AUTO_RIGHT_SIGNAL(void){
+	
+	if(previous_signal != R)
+	{
+		Finish_Signal();
+		LEFT_SIGNAL_PORT->CLR |= LEFT_SIGNAL_MASK;
+		RIGHT_SIGNAL_PORT->SET |= RIGHT_SIGNAL_MASK;
+	}
+}
+
 static uint32_t milisecond_counter = 0;
 
 void Signal_Init(){
@@ -46,8 +68,8 @@ void Start_Signal(GPIO_TypeDef* PORT, uint32_t MASK){
 }
 void Finish_Signal(){
 	
-	RIGHT_SIGNAL_PORT->CLR 	|= TURNING_MASK;
-	LEFT_SIGNAL_PORT->CLR 	|= TURNING_MASK;
+	RIGHT_SIGNAL_PORT->CLR 	|= RIGHT_SIGNAL_MASK;
+	LEFT_SIGNAL_PORT->CLR 	|= LEFT_SIGNAL_MASK;
 	
 	NVIC_DisableIRQ(TIMER1_IRQn);
 	TIMER1->MCR &= ~8;

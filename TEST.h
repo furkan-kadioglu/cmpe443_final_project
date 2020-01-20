@@ -1,9 +1,9 @@
 #include "LPC407x_8x_177x_8x.h"
 #include "Joystick.h"
-#include "Ultrasonic.h"
+#include "Command.h"
 #include "Led.h"
 #include "ADC.h"
-#include "External.h"
+#include "MotorSpeedSensor.h"
 #include "HM10.h"
 
 void Ultrasonic_Test(void);

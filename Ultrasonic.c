@@ -1,20 +1,33 @@
 #include "Ultrasonic.h"
 
-uint32_t ultrasonicSensorRisingCaptureTime;
-uint32_t ultrasonicSensorFallingCaptureTime;
-
 uint32_t ultrasonicSensorDistance = 0;
-
-uint8_t ultrasonicSensorTriggerStart = 0;
+uint32_t previousDistance = 0;
+uint32_t ultrasonicSensorRisingCaptureTime;
 uint8_t ultrasonicSensorCaptureRisingEdge = 0;
 uint8_t  ultrasonicAvailable = 0;
+
+uint8_t ultrasonicSensorTriggerStart = 0;
+uint8_t race_start = 0;
+
+
+// continous 2-sensor
+uint32_t ultrasonicSensorDistance2 = 0; 
+uint32_t previousDistance2 = 0;
+uint32_t ultrasonicSensorRisingCaptureTime2 = 0;
+uint8_t ultrasonicSensorCaptureRisingEdge2 = 0;
+uint8_t ultrasonicAvailable2 = 0;
+
+ 
 
 void Ultrasonic_Init() {
 	IOCON_TRIGGER |= 0x03;
 	IOCON_ECHO |= 0x03;
+	IOCON_ECHO2 |= 0x3;
 	
 	Ultrasonic_Trigger_Timer_Init();
 	Ultrasonic_Capture_Timer_Init();
+	
+	TIMER2->CCR |= (1<<0|1<<2); // two sensor
 	
 }
 
@@ -85,20 +98,42 @@ void Ultrasonic_Start_Trigger_Timer() {
 }
 
 void TIMER2_IRQHandler() {
-	//Write HIGH bit value to IR Register for Corresponding Interrupt
-	TIMER2->IR |= (1<<3);
 	
-	if(ultrasonicSensorTriggerStart == 0) {
-		//Change MR3 Register Value for Suggested Waiting
-		TIMER2->MR3 = 60000 + TIMER2->TC;
+	if(TIMER2->IR & (1<<4)){
 		
-		ultrasonicSensorTriggerStart = 1;
+		TIMER2->IR |= (1<<4);
+		
+		if(ultrasonicSensorCaptureRisingEdge2) {
+			ultrasonicSensorRisingCaptureTime2 = TIMER2->CR0;
+			
+			LPC_TIM2->CCR = (1 << 1) | (1 << 2);
+			ultrasonicSensorCaptureRisingEdge2 = 0;
+		}
+		else {
+			ultrasonicAvailable2 = 1;
+			ultrasonicSensorDistance2 = (170 * (TIMER2->CR0 - ultrasonicSensorRisingCaptureTime2)) ;
+						
+			LPC_TIM2->CCR = (1 << 0) | (1 << 2);
+			ultrasonicSensorCaptureRisingEdge2 = 1;
+		}
+		
 	}
-	else {
-		TIMER2->EMR |= (1 << 3);
-		TIMER2->MR3 = 10 + TIMER2->TC;
+	else{
+		//Write HIGH bit value to IR Register for Corresponding Interrupt
+		TIMER2->IR |= (1<<3);
 		
-		ultrasonicSensorTriggerStart = 0;
+		if(ultrasonicSensorTriggerStart == 0) {
+			//Change MR3 Register Value for Suggested Waiting
+			TIMER2->MR3 = 60000 + TIMER2->TC;
+			
+			ultrasonicSensorTriggerStart = 1;
+		}
+		else {
+			TIMER2->EMR |= (1 << 3);
+			TIMER2->MR3 = 10 + TIMER2->TC;
+			
+			ultrasonicSensorTriggerStart = 0;
+		}
 	}
 }
 
@@ -114,16 +149,6 @@ void TIMER3_IRQHandler() {
 	else {
 		ultrasonicAvailable = 1;
 		ultrasonicSensorDistance = (170 * (TIMER3->CR1 - ultrasonicSensorRisingCaptureTime)) ;
-		/*
-		if(ultrasonicSensorDistance > SPECIFIED_DISTANCE + 15000){
-			LEFT(5); // Mater has already moved forward, maybe this call will be optimized.
-			FORWARD();
-		}
-		if(ultrasonicSensorDistance < SPECIFIED_DISTANCE - 15000){
-			RIGHT(5);
-			FORWARD();
-		}
-		*/
 					
 		LPC_TIM3->CCR = (1 << 3) | (1 << 5);
 		ultrasonicSensorCaptureRisingEdge = 1;

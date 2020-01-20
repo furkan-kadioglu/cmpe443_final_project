@@ -1,20 +1,24 @@
 #include "TEST.h"
 
+#define ALPHA 0.8
+#define BETA 0.99
+#define DIVIDER MOTOR_POWER_IN_PERCENT/100.0
+
+double_t s_t = 0, s_t1 = 0, b_t1 = 0;
+
 
 void init() {
-	
 	MOTOR_Init();
 	TIMER_Init();
 	Signal_Init();
 	ADC_Init();
 	ADC_Start();
-	External_Init();
+	Motor_Speed_Sensor_Init();
 
 	Serial_Init();
 	HM10_Init();
 
 	Ultrasonic_Init();
-	// Trigger should be started at AUTO mode for the sake of power consumption
 	Ultrasonic_Start_Trigger_Timer();
 }
 
@@ -29,29 +33,46 @@ void update() {
 
 			if(!strcmp(serialBuffer, "FORWARD\r\n")){
 				Request("FORWARD\r\n");
-				FORWARD();
+				
+				ACTION = FORWARD_ACTION;
+				if(!photon_detected)
+					FORWARD();
 			}
 
 			if(!strcmp(serialBuffer, "BACK\r\n")){
 				Request("BACK\r\n");
-				BACK();
+				
+				ACTION = BACK_ACTION;
+				if(!photon_detected)
+					BACK();
 			}
 
 			if(!strcmp(serialBuffer, "STOP\r\n")){
+			
 				Request("STOP\r\n");
-				STOP();
+			
+				ACTION = STOP_ACTION;
+				if(!photon_detected)
+					STOP();
+				
 			}
 
 			if(!strcmp(serialBuffer, "RIGHT\r\n")){
 				Request("RIGHT\r\n");
 				NUMBER_OF_TURN = 0;
-				RIGHT();
+				
+				ACTION = RIGHT_ACTION;
+				if(!photon_detected)
+					RIGHT();
 			}
 
 			if(!strcmp(serialBuffer, "LEFT\r\n")){
 				Request("LEFT\r\n");
 				NUMBER_OF_TURN = 0;
-				LEFT();
+				
+				ACTION = LEFT_ACTION;
+				if(!photon_detected)
+					LEFT();
 			}
 
 			if(!strcmp(serialBuffer, "AUTO\r\n")){
@@ -68,23 +89,100 @@ void update() {
 				STATUS();
 			}
 			
-			if(!strcmp(serialBuffer, "START\r\n")){
+			if(!strcmp(serialBuffer, "START\r\n") && MODE == AUTO){
 				Request("START\r\n");
+				s_t = 0, s_t1 = 0, b_t1 = 0;
 				START();
 			}
+			
 
 			Clear_serialBuffer();
+		}
+	}
+	if(race_start){
+		
+		if(ultrasonicAvailable){
+			
+			ultrasonicAvailable = 0;
+		
+			MOTOR_DRIVER_IN1_PORT->SET |= MOTOR_DRIVER_IN1_MASK;
+			MOTOR_DRIVER_IN2_PORT->CLR |= MOTOR_DRIVER_IN2_MASK;
+			MOTOR_DRIVER_IN3_PORT->SET |= MOTOR_DRIVER_IN3_MASK;
+			MOTOR_DRIVER_IN4_PORT->CLR |= MOTOR_DRIVER_IN4_MASK;
+	
+			// Direct Mode
+			if(ultrasonicSensorDistance2 < 300000) // Observe 25cm 
+			{
+				MOTOR_DRIVER_IN1_PORT->CLR |= MOTOR_DRIVER_IN1_MASK;
+				MOTOR_DRIVER_IN2_PORT->SET |= MOTOR_DRIVER_IN2_MASK;
+				SET_MOTOR_POWER(60*DIVIDER, 60*DIVIDER);
+				
+				AUTO_RIGHT_SIGNAL();
+			}
+				
+			else
+			{
+				
+				if(ultrasonicSensorDistance < 500000)
+				{
+					if(!s_t1)
+						s_t1 = ultrasonicSensorDistance;
+					
+					if(!b_t1)
+						b_t1 = ultrasonicSensorDistance - SPECIFIED_DISTANCE;
+					
+					s_t = ALPHA * ultrasonicSensorDistance + (1-ALPHA) * (s_t1 + b_t1);
+					b_t1 = BETA * (s_t - s_t1) + (1-BETA) * b_t1;
+						
+					ultrasonicSensorDistance = s_t;
+					s_t1 = s_t;
+				}
+					
+				
+				// 24 --- 26
+				if(SPECIFIED_DISTANCE-10000 < (int32_t)ultrasonicSensorDistance &&\
+					 SPECIFIED_DISTANCE+10000 > (int32_t)ultrasonicSensorDistance )
+				{
+					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
+					Finish_Signal();
+				}
+				
+					
+				// 0 --- 24
+				else if(SPECIFIED_DISTANCE > ultrasonicSensorDistance )
+				{
+					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, REACTION(ultrasonicSensorDistance/10000)*DIVIDER);
+					AUTO_RIGHT_SIGNAL();
+				}
+								
+				
+				// 26 --- 50
+				else if(2*SPECIFIED_DISTANCE > ultrasonicSensorDistance )
+				{
+					SET_MOTOR_POWER(REACTION((2*SPECIFIED_DISTANCE - ultrasonicSensorDistance)/10000)*DIVIDER, MOTOR_POWER_IN_PERCENT);
+					AUTO_LEFT_SIGNAL();
+				}
+				
+				
+				// Farazi mode 50+
+				else
+				{
+					SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT * 0.06 , MOTOR_POWER_IN_PERCENT);
+					AUTO_LEFT_SIGNAL();
+				}
+			}
 		}
 	}
 
 	if(ADC_Available){
 		
 		ADC_Available = 0;
+		
 		// Potentiometer - Motor Speed
 		MOTOR_POWER_IN_PERCENT = (Potentiometer_Last*100) / 0xFFF;
 		
 		if(MOTOR_ON)
-			SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);
+			SET_MOTOR_POWER(MOTOR_POWER_IN_PERCENT, MOTOR_POWER_IN_PERCENT);		
 		
 
 		// LDR - Start/Stop
@@ -93,7 +191,7 @@ void update() {
 		
 		if(MODE == TEST){
 			
-			if(LDR1_Last_Light_Level > 500 || LDR2_Last_Light_Level > 500){
+			if(LDR1_Last_Light_Level > light_threshold || LDR2_Last_Light_Level > light_threshold){
 				
 				MOTOR_ON = 0;
 				SET_MOTOR_POWER(0, 0);
@@ -121,17 +219,12 @@ void update() {
 		
 		else{
 			if(race_start){		
-				if(LDR1_Last_Light_Level > 500 || LDR2_Last_Light_Level > 500){
-					race_start = 0;
-					STOP();
+				if(LDR1_Last_Light_Level > light_threshold || LDR2_Last_Light_Level > light_threshold)
 					FINISH();
-				}
 			}
 			
 		}
 	}
-
-
 }
 
 int main() {
